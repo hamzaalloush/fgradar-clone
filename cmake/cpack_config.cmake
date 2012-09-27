@@ -1,0 +1,23 @@
+## CPack configuration ##
+#########################
+
+set(CPACK_PACKAGE_NAME ${PROJECT_LOWER}) # Set the package name lowercase.
+set(CPACK_PACKAGE_VERSION_MAJOR ${FGRADAR_VERSION_MAJOR}) 
+set(CPACK_PACKAGE_VERSION_MINOR ${FGRADAR_VERSION_MINOR})
+set(CPACK_PACKAGE_VERSION_PATCH ${FGRADAR_VERSION_PATCH})
+
+set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/COPYING")
+set(CPACK_RESOURCE_FILE_README  "${PROJECT_SOURCE_DIR}/README")
+
+# DEB
+set(CPACK_DEBIAN_PACKAGE_NAME ${PROJECT_LOWER})
+set(CPACK_DEBIAN_PACKAGE_VERSION ${PROJECT_VERSION})
+set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
+set(CPACK_DEBIAN_PACKAGE_DEPENDS
+  "libc6 (>= 2.2.5), libgtkmm-3.0-1 (>= 3.3.0), libxml++2.6-2, libboost-thread1.49.0, libboost-system1.49.0")
+set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Fernando Garcia <fernando.garli@gmail.com>")
+set(CPACK_DEBIAN_PACKAGE_DESCRIPTION "FGRadar is a standalone ATC client for the FlightGear flight simulator.")
+set(CPACK_DEBIAN_PACKAGE_SECTION games)
+set(CPACK_DEBIAN_PACKAGE_PRIORITY optional)
+
+include(CPack)

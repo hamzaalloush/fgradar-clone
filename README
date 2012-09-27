@@ -1,0 +1,8 @@
+FGRADAR
+=======
+
+FGRadar aims to create a stand-alone ATC client for the FlightGear flight
+simulator. The reason for this are several ATC aircrafts, not really
+professional or accurate as a real ATC radar. 
+
+See the INSTALL file to see compiling instructions.

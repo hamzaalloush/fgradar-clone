@@ -1,0 +1,43 @@
+FGRADAR INSTALLATION INSTRUCTIONS
+=================================
+
+
+REQUIREMENTS
+------------
+
+To build FGRadar you will need the following dependencies:
+
+ - GTKmm (GTK+ binding for C++) 3.3 or later AND ALL ITS DEPENDENCIES.
+ - libxml++ (libxml2 binding for C++).
+ - Boost 1.50.0 or later (thread and system components).
+
+(These are not dependencies but are required to build the program).
+ - CMake 2.8 or later (as the build system).
+ - A compiler or IDE which has one. For example GCC for Linux or Visual Basic
+   as an IDE for Windows.
+
+
+LINUX / MAC or any other Unix-like system
+-----------------------------------------
+
+ - 0th: Check you have all the dependencies!
+
+ - 1st: Create a folder called 'build' in the root directory of the program,
+        either by typing 'mkdir build' via command-line inside the program root
+        directory or in any file manager of your choice.
+
+ - 2nd: Go inside the newly created folder and run the command 'cmake ..'. The '..'
+        indicates the location of the program's root directory.
+
+ - 3rd: If everything runs OK, it means you have all the dependencies, now run
+        the command 'make' to build the sources.
+
+ - 4th: Once built, optionally run the 'make install' command to install
+        sources globally in your system.
+
+
+WINDOWS
+-------
+
+(Currently FGRadar doesn't fully support Windows systems, but it sure will do
+in future updates).
