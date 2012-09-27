@@ -7,8 +7,7 @@ REQUIREMENTS
 
 To build FGRadar you will need the following dependencies:
 
- - GTKmm (GTK+ binding for C++) 3.3 or later AND ALL ITS DEPENDENCIES.
- - libxml++ (libxml2 binding for C++).
+ - wxWidgets v2.8.0 or later.
  - Boost 1.50.0 or later (thread and system components).
 
 (These are not dependencies but are required to build the program).
@@ -26,8 +25,8 @@ LINUX / MAC or any other Unix-like system
         either by typing 'mkdir build' via command-line inside the program root
         directory or in any file manager of your choice.
 
- - 2nd: Go inside the newly created folder and run the command 'cmake ..'. The '..'
-        indicates the location of the program's root directory.
+ - 2nd: Go inside the newly created folder and run the command 'cmake ..'.
+        The '..' indicates the location of FGRadar's root directory.
 
  - 3rd: If everything runs OK, it means you have all the dependencies, now run
         the command 'make' to build the sources.
