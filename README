@@ -1,8 +1,33 @@
-FGRADAR
-=======
+       ________________  ___    ____  ___    ____ 
+      / ____/ ____/ __ \/   |  / __ \/   |  / __ \
+     / /_  / / __/ /_/ / /| | / / / / /| | / /_/ /
+    / __/ / /_/ / _, _/ ___ |/ /_/ / ___ |/ _, _/ 
+   /_/    \____/_/ |_/_/  |_/_____/_/  |_/_/ |_|  
 
-FGRadar aims to create a stand-alone ATC client for the FlightGear flight
-simulator. The reason for this are several ATC aircrafts, not really
-professional or accurate as a real ATC radar. 
+
+FGRadar aims to create a stand-alone ATC client for the free and open-source
+FlightGear flight simulator. The reason for this are several ATC aircrafts,
+not really professional or accurate as a real ATC radar.
+
+INSTALL INSTRUCTIONS
+--------------------
 
 See the INSTALL file to see compiling instructions.
+
+ABOUT THE GUI TOOLKIT
+---------------------
+
+FGRadar is implemented using GTKmm 3.4. Latest versions of GTKmm, such as 3.4,
+are not available for other platform, only Linux.
+
+You may be asking why I used GTKmm when there are, as most people say,
+"awesome GUI toolkits out there". So, at first I used GTKmm, but then I
+thought about people complaining about its not-cross-platform features. So
+I changed to wxWidgets. After doing some work with it, I didn't like it for
+several reasons, so I changed back to GTKmm.
+
+Since this is an open-source project, everyone can contribute to it! I don't
+feel comfortable working with QT or wxWidgets, nor with low-level GUIs such
+as Xorg in Linux or the native Windows GUIs. If someone does, feel free to
+write your own GUI! I am trying to make as flexible as I can, so it is easy
+to add another GUI option without even disturbing other modules.

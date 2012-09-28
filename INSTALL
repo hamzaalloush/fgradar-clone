@@ -7,7 +7,7 @@ REQUIREMENTS
 
 To build FGRadar you will need the following dependencies:
 
- - wxWidgets v2.8.0 or later.
+ - GTKmm 3.4 or later (and all its dependencies).
  - Boost 1.50.0 or later (thread and system components).
 
 (These are not dependencies but are required to build the program).
