@@ -1,9 +1,11 @@
-set(SOURCES
-  file_manager.cpp
-  logger.cpp
-)
+set(SOURCES ${SOURCES}
+  io/file_manager.cpp
+  io/logger.cpp
 
-set(HEADERS
-  file_manager.hpp
-  logger.hpp
-)
+  PARENT_SCOPE)
+
+set(HEADERS ${HEADERS}
+  io/file_manager.hpp
+  io/logger.hpp
+
+  PARENT_SCOPE)
