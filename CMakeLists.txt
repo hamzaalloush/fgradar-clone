@@ -28,10 +28,10 @@ include(cpack_config)
 
 message(STATUS "Checking for libraries... ")
 
-# Check for wxWidgets
-find_package(wxWidgets COMPONENTS core base REQUIRED)
-include("${wxWidgets_USE_FILE}")
-set(LIBS ${LIBS} ${wxWidgets_LIBRARIES})
+# Check for GTKmm
+find_package(GTKmm REQUIRED)
+include_directories(${GTKmm_INCLUDE_DIRS})
+set(LIBS ${LIBS} ${GTKmm_LIBRARIES})
 
 # Check for Boost
 # (Just include the thread and system components).

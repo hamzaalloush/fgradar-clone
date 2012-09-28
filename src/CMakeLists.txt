@@ -1,25 +1,9 @@
-set(SOURCES
-  gui/mainwin.cpp
-  gui/preferences_dialog.cpp
+foreach(CURR_DIR
+    io)
+  add_subdirectory(${CURR_DIR})
+endforeach()
 
-  io/file_manager.cpp
-  io/logger.cpp
-
-  app.cpp)
-
-set(HEADERS
-  include/config.h
-
-  io/file_manager.hpp
-  io/logger.hpp
-
-  gui/mainwin.hpp
-  gui/preferences_dialog.hpp
-
-  app.hpp)
-
-add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS})
+add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS} main.cpp)
 target_link_libraries(${PACKAGE_LOWER} ${LIBS})
 
 install(TARGETS ${PACKAGE_LOWER} RUNTIME DESTINATION bin)
-
