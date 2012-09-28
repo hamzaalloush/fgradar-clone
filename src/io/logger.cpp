@@ -1,6 +1,6 @@
 /**
- * @file logger.cpp
- * @brief Implements class Logger.
+ * \file logger.cpp
+ * \brief Implements class Logger.
  */
 
 // Copyright (C) 2012  Fernando García Liñán  <fernando.garli@gmail.com>
