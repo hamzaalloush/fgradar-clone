@@ -23,21 +23,55 @@
 #include <glibmm/thread.h>
 #include <gtkmm/application.h>
 
-/**
- * \brief Allocate memory and starts running the main loop.
- *
- * It checks for errors and exit the program if there's one. Otherwise, just
- * return 0 for a normal program exit.
- */
+#include "gui/mainwindow.hpp"
+#include "io/file_manager.hpp"
+#include "io/logger.hpp"
+
+using namespace fgradar;
+
+namespace {
+
+     /**
+      * Initialize program.
+      * Allocate memory for some modules, initialize singletons etc.
+      */
+     void Init()
+     {
+          file_manager = new FileManager;
+
+          if (!Singleton<Logger>::GetInstance().Init("log.txt", LOG_WARN)) {
+               std::cerr << "Failed to initialize log, no log messages will"
+                    "be outputted." << std::endl;
+          }
+     }
+
+     /**
+      * Shutdown program.
+      * Free previously allocated memory. Some modules get free automagically,
+      * so we don't need to add them here (for example, singletons).
+      */
+     void Shutdown()
+     {
+          if (!file_manager) delete file_manager;
+     }
+
+}
+
 int main(int argc, char *argv[])
 {
    if (!Glib::thread_supported())
       Glib::thread_init();
+
+   Init();
    
    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create
       (argc, argv, "org.fgradar");
 
-   std::cout << "OH YEAH IT WORKS" << std::endl;
+   MainWindow win;
+
+   int result = app->run(win);
+
+   Shutdown();
    
-   return 0;
+   return result;
 }

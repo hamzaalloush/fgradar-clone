@@ -1,4 +1,5 @@
 foreach(CURR_DIR
+    gui
     io)
   add_subdirectory(${CURR_DIR})
 endforeach()
