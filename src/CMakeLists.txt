@@ -1,6 +1,7 @@
 foreach(CURR_DIR
     gui
-    io)
+    io
+    math)
   add_subdirectory(${CURR_DIR})
 endforeach()
 

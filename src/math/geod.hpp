@@ -21,7 +21,7 @@
 #ifndef _GEOD_HPP_
 #define _GEOD_HPP_
 
-#include "constants.hpp"
+#include "util/constants.hpp"
 
 namespace fgradar {
 
