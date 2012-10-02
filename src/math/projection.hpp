@@ -50,7 +50,7 @@ namespace fgradar {
            * computes the 2D position on the screen of the point. It has in
            * mind zoom level too (contained in eye position's altitude).
            */
-          virtual Vec2 Transform(Geod &pos, Geod &eye_pos) = 0;
+          virtual Vec2 Transform(const Geod &pos, const Geod &eye_pos) = 0;
      };
 
      /**
@@ -63,7 +63,7 @@ namespace fgradar {
      class MercatorProj : public Projection {
      public:
 
-          virtual Vec2 Transform(Geod &pos, Geod &eye_pos) {
+          virtual Vec2 Transform(const Geod &pos, const Geod &eye_pos) {
 
                int zoom = pow(2.0, eye_pos.get_alt_ft());
                
