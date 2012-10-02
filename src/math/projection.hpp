@@ -1,6 +1,6 @@
 /**
  * \file projection.hpp
- * \brief Header for projection.cpp.
+ * \brief Manages map projections.
  */
 
 // Copyright (C) 2012  Fernando García  <fernando.garli@gmail.com>
@@ -71,7 +71,6 @@ namespace fgradar {
                double y = log(tan(pos.get_lat_rad()) + 1 / cos
                               (pos.get_lat_rad())) * zoom;
 
-               std::cout << "x = " << x << " | y = " << y << std::endl;
                return Vec2(x, y);
           }
      };
