@@ -67,15 +67,6 @@ int main(int argc, char *argv[])
 
    Init();
 
-   Geod test_pos = Geod::from_deg(45, 90);
-   Geod eye_pos = Geod::from_deg_ft(0, 0, 0);
-
-   Projection *projection = new MercatorProj;
-
-   projection->GeodToVec2(test_pos, eye_pos);
-
-   delete projection;
-   
    Glib::RefPtr<Gtk::Application> app = Gtk::Application::create
       (argc, argv, "org.fgradar");
 
