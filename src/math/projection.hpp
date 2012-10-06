@@ -54,6 +54,26 @@ namespace fgradar {
      };
 
      /**
+      * \brief A simple map projection for testing purposes.
+      *
+      * Just takes a point and projects it on the screen without any additional
+      * calculations (but I still has zoom and eye position in count).
+      */
+     class SimpleProj : public Projection {
+     public:
+
+          virtual Vec2 Transform(const Geod &pos, const Geod &eye_pos) {
+
+               int zoom = pow(2.0, eye_pos.get_alt_ft());
+
+               double x = (pos.get_lon_rad() - eye_pos.get_lon_rad()) * zoom;
+               double y = (pos.get_lat_rad() - eye_pos.get_lat_rad()) * zoom;
+
+               return Vec2(x, y);
+          }
+     };
+
+     /**
       * \brief Implements Mercator map projection.
       *
       * This class implements the Mercator projection. This is a really basic
