@@ -1,0 +1,59 @@
+# Spanish translations for PACKAGE package
+# Traducciones al español para el paquete PACKAGE.
+# Copyright (C) 2012 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Fernando García Liñán <fernando.garli@gmail.com>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-10 20:45+0200\n"
+"PO-Revision-Date: 2012-10-10 20:47+0200\n"
+"Last-Translator: Fernando García Liñán <fernando.garli@gmail.com>\n"
+"Language-Team: Spanish\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/io/file_manager.cpp:125
+msgid " works!"
+msgstr " funciona!"
+
+#: ../src/io/file_manager.cpp:50
+msgid "Aborting..."
+msgstr "Abortando..."
+
+#: ../src/io/file_manager.cpp:147
+msgid "ERROR: Can't create configuration directory."
+msgstr "ERROR: Imposible crear el directorio de configuración."
+
+#: ../src/io/file_manager.cpp:72
+msgid ""
+"ERROR: DATADIR not defined while building. Please specify data directory "
+"manually by the command line."
+msgstr "ERROR: DATADIR no ha sido especificado mientras se compilaba. Por "
+"favor especifique el directorio de datos en la línea de comandos."
+
+#: ../src/io/file_manager.cpp:79
+msgid "ERROR: Failed to create configuration directory."
+msgstr "ERROR: Imposible crear directory de configuración."
+
+#: ../src/io/file_manager.cpp:110
+msgid "INFO: Couldn't get XDG configuration directory, trying to create it..."
+msgstr "INFO: No se pudo determinator el directorio de configuración de XDG, "
+"intentando crearlo..."
+
+#: ../src/io/file_manager.cpp:139
+msgid "Unsupported platform."
+msgstr "Plataforma no soportada."
+
+#: ../src/io/file_manager.cpp:133
+msgid "WARNING: Can't locate APPDATA, using current directory."
+msgstr "PELIGRO: Imposible localizar APPDATA, usando el directorio actual."
+
+#: ../src/io/file_manager.cpp:118
+msgid "WARNING: Couldn't create XDG .config, using HOME."
+msgstr "PELIGRO: Imposible crear el directory .config de XDG, usando HOME."

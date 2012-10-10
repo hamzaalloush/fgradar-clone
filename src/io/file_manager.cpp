@@ -30,6 +30,7 @@
 #endif
 
 #include "include/config.h"
+#include "i18n.hpp"
 
 #include "file_manager.hpp"
 
@@ -46,7 +47,7 @@ namespace fgradar {
      FileManager::FileManager()
      {
           if (!Init()) {
-               std::cerr << "Aborting..." << std::endl;
+               std::cerr << _("Aborting...") << std::endl;
                exit(1);
           }
      }
@@ -68,14 +69,14 @@ namespace fgradar {
 #ifdef DATADIR
           m_datadir = DATADIR;
 #else
-     std:cerr << "ERROR: DATADIR not defined while building. Please specify"
-               "data directory manually by the command line." << std::endl;
+     std:cerr << _("ERROR: DATADIR not defined while building. Please specify "
+                   "data directory manually by the command line.") << std::endl;
           return false;
 #endif
           
           // Check and create configuration directory, depending on platform
           if (!CreateConfigDirectory()) {
-               std::cerr << "ERROR: Failed to create configuration directory."
+               std::cerr << _("ERROR: Failed to create configuration directory.")
                          << std::endl;
                return false;
           }
@@ -106,21 +107,22 @@ namespace fgradar {
                m_confdir = getenv("XDG_CONFIG_HOME");
           else {
 
-               std::cout << "INFO: Couldn't get XDG configuration directory, "
-                    "trying to create it...";
+               std::cout << _("INFO: Couldn't get XDG configuration directory, "
+                              "trying to create it...");
                
                m_confdir = getenv("HOME");
                m_confdir += "/.config";
 
                if (!MakeDirectory(m_confdir)) {
-                    std::cerr << std::endl << "WARNING: Couldn't create XDG"
-                         ".config, using HOME." << std::endl;
+                    std::cerr << std::endl <<
+                         _("WARNING: Couldn't create XDG .config, using HOME.")
+                              << std::endl;
 
                     // In a Linux system, HOME directory SHOULD be always
                     // available for each user...
                     m_confdir = getenv("HOME");
                } else
-                    std::cout << " works!" << std::endl;
+                    std::cout << _(" works!") << std::endl;
           }
 
 #elif defined _WIN32
@@ -128,13 +130,13 @@ namespace fgradar {
           if (getenv("APPDATA") != NULL)
                m_confdir = getenv("APPDATA");
           else {
-               std::cerr << "WARNING: Can't locate APPDATA, using current"
-                    "directory." << std::endl;
+               std::cerr << _("WARNING: Can't locate APPDATA, using current "
+                              "directory.") << std::endl;
                m_confdir = ".";
           }
 
 #else
-          std::cerr << "Unsupported platform." << std::endl;
+          std::cerr << _("Unsupported platform.") << std::endl;
           return false;
 #endif
 
@@ -142,7 +144,7 @@ namespace fgradar {
           m_confdir += PACKAGE_LOWER;
           
           if (!MakeDirectory(m_confdir)) {
-               std::cerr << "ERROR: Can't create configuration directory."
+               std::cerr << _("ERROR: Can't create configuration directory.")
                          << std::endl;
                return false;
           }

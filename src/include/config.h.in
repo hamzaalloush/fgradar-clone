@@ -5,4 +5,4 @@
 #define DATADIR "@DATADIR@"
 #define INSTALL_PREFIX "@CMAKE_INSTALL_PREFIX@"
 
-#define HAVE_CONFIG_H
+#cmakedefine I18N_ENABLED

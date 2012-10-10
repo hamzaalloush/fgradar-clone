@@ -6,8 +6,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 # Define the project name.
 project(FGRadar)
 
-# We defined the project name with capitals and all that. Define one in lower
-# letters, for directory usage.
+# We defined the project name with capitals and all that. Define the same in
+# lower case, to avoid wasting CPU in lower casing from code.
 set(PACKAGE_LOWER fgradar)
 
 # Set version-
@@ -33,11 +33,16 @@ find_package(GTKmm REQUIRED)
 include_directories(${GTKmm_INCLUDE_DIRS})
 set(LIBS ${LIBS} ${GTKmm_LIBRARIES})
 
-# Check for Boost
-# (Just include the thread and system components).
-find_package(Boost COMPONENTS thread system REQUIRED)
-include_directories(${Boost_INCLUDE_DIRS})
-set(LIBS ${LIBS} ${Boost_LIBRARIES})
+# Check for Gettext (it is an optional package, it is not required for the
+# compilation).
+find_package(Gettext)
+if(GETTEXT_FOUND)
+  set(I18N_ENABLED TRUE)
+  message(STATUS "Gettext found, internationalization available.")
+else()
+  set(I18N_ENABLED FALSE)
+  message(WARNING "Gettext NOT found, internationalization NOT available.")
+endif()
 
 if(UNIX)
   add_definitions(-Wall)
