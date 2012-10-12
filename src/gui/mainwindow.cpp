@@ -20,11 +20,13 @@
 
 #include "mainwindow.hpp"
 
+#include "include/config.h"
+
 namespace fgradar {
 
      MainWindow::MainWindow()
      {
-          
+          set_title(std::string(PACKAGE) + " - " + VERSION);
      }
 
      MainWindow::~MainWindow()

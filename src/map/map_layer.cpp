@@ -1,6 +1,6 @@
 /**
- * \file mainwindow.h
- * \brief Header for mainwindow.cpp.
+ * \file map_layer.cpp
+ * \brief Implements several map layers.
  */
 
 // Copyright (C) 2012  Fernando García  <fernando.garli@gmail.com>
@@ -18,24 +18,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _MAINWINDOW_H_
-#define _MAINWINDOW_H_
-
-#include <gtkmm/window.h>
+#include "map_layer.hpp"
 
 namespace fgradar {
 
-     class MainWindow : public Gtk::Window {
-     public:
+     /**
+      * \brief Constructor.
+      * Default constructor for all map layers.
+      */
+     Layer::Layer() :
+          m_is_visible(true) {}
 
-          MainWindow();
+     /// POST PROCESS LAYER ///
 
-          virtual ~MainWindow();
-          
-     private:
+     /**
+      * \brief Constructor.
+      * Creates the post process layer.
+      */
+     PostProcessLayer::PostProcessLayer() :
+          Layer() {}
 
-     };
+     void PostProcessLayer::draw(const Cairo::RefPtr<Cairo::Context> &cr)
+     {
+
+     }
      
 } // namespace fgradar
-
-#endif // _MAINWINDOW_H_

@@ -1,5 +1,5 @@
 /**
- * \file navaid_manager.hpp
+ * \file navaid_manager.h
  * \brief Header for navaid_manager.cpp.
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _NAVAID_MANAGER_HPP_
-#define _NAVAID_MANAGER_HPP_
+#ifndef _NAVAID_MANAGER_H_
+#define _NAVAID_MANAGER_H_
 
 #include <iostream>
 #include "gui/radar.hpp"
@@ -76,4 +76,4 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _NAVAID_MANAGER_HPP_
+#endif // _NAVAID_MANAGER_H_

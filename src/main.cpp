@@ -29,9 +29,6 @@
 #include "io/file_manager.hpp"
 #include "io/logger.hpp"
 
-#include "math/projection.hpp"
-#include "math/geod.hpp"
-
 using namespace fgradar;
 
 namespace {

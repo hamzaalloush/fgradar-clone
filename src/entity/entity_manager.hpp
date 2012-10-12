@@ -1,5 +1,5 @@
 /**
- * \file entity_manager.hpp
+ * \file entity_manager.h
  * \brief Header for entity_manager.cpp.
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _ENTITY_MANAGER_HPP_
-#define _ENTITY_MANAGER_HPP_
+#ifndef _ENTITY_MANAGER_H_
+#define _ENTITY_MANAGER_H_
 
 namespace fgradar {
 
@@ -37,4 +37,4 @@ namespace fgradar {
      
 } // namespace fgradar
 
-#endif // _ENTITY_MANAGER_HPP_
+#endif // _ENTITY_MANAGER_H_

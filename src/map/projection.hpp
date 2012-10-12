@@ -1,5 +1,5 @@
 /**
- * \file projection.hpp
+ * \file projection.h
  * \brief Manages map projections.
  */
 
@@ -18,13 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _PROJECTION_HPP_
-#define _PROJECTION_HPP_
+#ifndef _PROJECTION_H_
+#define _PROJECTION_H_
 
 #include <cmath>
 
-#include "geod.hpp"
-#include "vec2.hpp"
+#include "math/geod.hpp"
+#include "math/vec2.hpp"
 
 namespace fgradar {
 
@@ -38,7 +38,7 @@ namespace fgradar {
       */
      class Projection {
      public:
-
+               
           virtual ~Projection() {}
 
           /**
@@ -97,4 +97,4 @@ namespace fgradar {
      
 } // namespace fgradar
 
-#endif // _PROJECTION_HPP_
+#endif // _PROJECTION_H_

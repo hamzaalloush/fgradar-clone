@@ -1,5 +1,5 @@
 /**
- * \file entity.hpp
+ * \file entity.h
  * \brief Defines the base class for all the entities.
  */
 
@@ -18,15 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _ENTITY_HPP_
-#define _ENTITY_HPP_
+#ifndef _ENTITY_H_
+#define _ENTITY_H_
 
 #include <cairomm/context.h>
 #include <iostream>
 #include <vector>
 
 #include "gui/radar.hpp"
-#include "util/geod.hpp"
+#include "utils/geod.hpp"
 
 namespace fgradar {
      
@@ -75,4 +75,4 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _ENTITY_HPP_
+#endif // _ENTITY_H_

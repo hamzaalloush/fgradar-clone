@@ -1,6 +1,6 @@
 /**
- * \file mainwindow.h
- * \brief Header for mainwindow.cpp.
+ * \file map.h
+ * \brief Header for map.cpp.
  */
 
 // Copyright (C) 2012  Fernando García  <fernando.garli@gmail.com>
@@ -18,24 +18,36 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _MAINWINDOW_H_
-#define _MAINWINDOW_H_
+#ifndef _MAP_H_
+#define _MAP_H_
 
-#include <gtkmm/window.h>
+#include <cairomm/context.h>
+#include <gtkmm/drawingarea.h>
+#include <iostream>
+
+#include "projection.hpp"
 
 namespace fgradar {
 
-     class MainWindow : public Gtk::Window {
+     class Map : public Gtk::DrawingArea {
      public:
 
-          MainWindow();
+          Map();
+          virtual ~Map();
 
-          virtual ~MainWindow();
+     protected:
+
+          virtual bool on_draw(const Cairo::RefPtr<Cairo::Context> &cr);
           
      private:
 
+          /** Current projection. This projection is the one that are currently
+              using to project things on the screen. To change the projection,
+              just change the content of this variable to one of its derived
+              classes. */
+          Projection *m_projection;
      };
      
 } // namespace fgradar
 
-#endif // _MAINWINDOW_H_
+#endif // _MAP_H_

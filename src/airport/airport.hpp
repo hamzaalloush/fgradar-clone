@@ -1,5 +1,5 @@
 /**
- * \file airport.hpp
+ * \file airport.h
  * \brief Header for airport.cpp.
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _AIRPORT_HPP_
-#define _AIRPORT_HPP_
+#ifndef _AIRPORT_H_
+#define _AIRPORT_H_
 
 #include "entity/entity.hpp"
 
@@ -125,4 +125,4 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _AIRPORT_HPP_
+#endif // _AIRPORT_H_

@@ -1,5 +1,5 @@
 /**
- * \file aircraft.hpp
+ * \file aircraft.h
  * \header for aircraft.cpp
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _AIRCRAFT_HPP_
-#define _AIRCRAFT_HPP_
+#ifndef _AIRCRAFT_H_
+#define _AIRCRAFT_H_
 
 #include <iostream>
 #include <list>
@@ -127,4 +127,4 @@ namespace fgradar {
 
 }
 
-#endif // _AIRCRAFT_HPP_
+#endif // _AIRCRAFT_H_

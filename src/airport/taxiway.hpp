@@ -1,5 +1,5 @@
 /**
- * \file taxiway.hpp
+ * \file taxiway.h
  * \brief Header for taxiway.cpp.
  */
 
@@ -18,10 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _TAXIWAY_HPP_
-#define _TAXIWAY_HPP_
+#ifndef _TAXIWAY_H_
+#define _TAXIWAY_H_
 
-#include "util/geod.hpp"
+#include "utils/geod.hpp"
 
 namespace fgradar {
 
@@ -84,5 +84,5 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _TAXIWAY_HPP_
+#endif // _TAXIWAY_H_
 

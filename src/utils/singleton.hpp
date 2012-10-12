@@ -1,5 +1,5 @@
 /**
- * \file singleton.hpp
+ * \file singleton.h
  * \brief Singleton design pattern template.
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _SINGLETON_HPP_
-#define _SINGLETON_HPP_
+#ifndef _SINGLETON_H_
+#define _SINGLETON_H_
 
 namespace fgradar {
 
@@ -59,4 +59,4 @@ namespace fgradar {
      
 } // namespace fgradar
 
-#endif // _SINGLETON_HPP_
+#endif // _SINGLETON_H_

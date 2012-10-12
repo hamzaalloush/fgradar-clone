@@ -1,6 +1,6 @@
 /**
- * \file constants.hpp
- * \brief Some useful constants.
+ * \file string_utils.h
+ * \brief Header for utils.cpp.
  */
 
 // Copyright (C) 2012  Fernando García Liñán  <fernando.garli@gmail.com>
@@ -18,21 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _CONSTANTS_HPP_
-#define _CONSTANTS_HPP_
+#ifndef _STRING_UTILS_H_
+#define _STRING_UTILS_H_
+
+#include <iostream>
+#include <sstream>
 
 namespace fgradar {
 
-     const int EARTH_RADIUS = 6378; // Equatorial, KM
+     namespace utils {
 
-     const double DEGREES_TO_MILES = 69.11;
-     const double DEGREES_TO_RADIANS = 0.0174532925;
-     const double KILOMETERS_TO_MILES = 0.53995;
-     const double FEETS_TO_METERS = 0.3048;
-     const double FEETS_TO_MILES = 0.000189393939;
+     } // namespace utils
+     
+} // namespace fgradar
 
-     const int RING_RATE = 10;
-     const int NAVAID_SIZE = 6; // pixels
-}
-
-#endif // _CONSTANTS_HPP_
+#endif // _STRING_UTILS_H_

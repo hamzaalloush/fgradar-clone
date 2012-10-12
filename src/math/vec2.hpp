@@ -1,5 +1,5 @@
 /**
- * \file vec2.hpp
+ * \file vec2.h
  * \brief Coordinates on the screen.
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _VEC2_HPP_
-#define _VEC2_HPP_
+#ifndef _VEC2_H_
+#define _VEC2_H_
 
 namespace fgradar {
 
@@ -100,4 +100,4 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _VEC2_HPP_
+#endif // _VEC2_H_

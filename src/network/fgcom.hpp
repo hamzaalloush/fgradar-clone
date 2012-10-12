@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _FGCOM_HPP_
-#define _FGCOM_HPP_
+#ifndef _FGCOM_H_
+#define _FGCOM_H_
 
 namespace fgradar {
 
@@ -130,4 +130,4 @@ namespace fgradar {
      }
 } // namespace fgradar
 
-#endif // _FGCOM_HPP_
+#endif // _FGCOM_H_

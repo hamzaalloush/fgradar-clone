@@ -28,7 +28,7 @@
 #include "taxiway.hpp"
 #include "io/file_manager.hpp"
 #include "io/logger.hpp"
-#include "util/geod.hpp"
+#include "utils/geod.hpp"
 
 namespace fgradar {
 

@@ -19,8 +19,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iostream>
-#include "util/constants.hpp"
-#include "util/utils.hpp"
+#include "utils/constants.hpp"
+#include "utils/utils.hpp"
 #include "taxiway.hpp"
 
 namespace fgradar {

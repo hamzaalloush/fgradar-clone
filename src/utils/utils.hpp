@@ -1,5 +1,5 @@
 /**
- * \file utils.hpp
+ * \file utils.h
  * \brief Header for utils.cpp.
  */
 
@@ -18,14 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _UTILS_HPP_
-#define _UTILS_HPP_
+#ifndef _UTILS_H_
+#define _UTILS_H_
 
 #include <glibmm/ustring.h>
 
-#include "gui/radar.hpp"
-#include "geod.hpp"
-#include "vec2.hpp"
+#include "math/geod.hpp"
+#include "math/vec2.hpp"
 
 namespace fgradar {
 
@@ -36,11 +35,6 @@ namespace fgradar {
           int bearing(const Geod &start_pos, const Geod &end_pos);
           Geod dest_point(const Geod &geod, const int bearing,
                           const double distance);
-          // int lon_to_screenx(const double lon, const double eye_lon,
-          //                    const int zoom, const int screen_width);
-          // int lat_to_screeny(const double lat, const double eye_lat,
-          //                    const int zoom, const int screen_height);
-          Vec2 geod_to_vec2(const Geod &pos, const Radar &radar);
 
           double xpoint_on_circle(const double radius, const double angle,
                                   const int xorigin);
@@ -57,4 +51,4 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _UTILS_HPP_
+#endif // _UTILS_H_

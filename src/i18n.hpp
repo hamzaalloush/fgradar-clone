@@ -1,5 +1,5 @@
 /**
- * \file i18n.hpp
+ * \file i18n.h
  * \brief Adds i18n support.
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _I18N_HPP_
-#define _I18N_HPP_
+#ifndef _I18N_H_
+#define _I18N_H_
 
 #ifdef I18N_ENABLED
 
@@ -36,4 +36,4 @@
 
 #endif
 
-#endif // _I18N_HPP_
+#endif // _I18N_H_

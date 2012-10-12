@@ -1,5 +1,5 @@
 /**
- * \file navaid.hpp
+ * \file navaid.h
  * \brief Header for navaid.cpp.
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _NAVAID_HPP_
-#define _NAVAID_HPP_
+#ifndef _NAVAID_H_
+#define _NAVAID_H_
 
 #include "entity.hpp"
 
@@ -89,4 +89,4 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _NAVAID_HPP_
+#endif // _NAVAID_H_

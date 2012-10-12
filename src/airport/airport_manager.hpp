@@ -1,5 +1,5 @@
 /**
- * \file airport_manager.hpp
+ * \file airport_manager.h
  * \brief Header for airport_manager.cpp.
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _AIRPORT_MANAGER_HPP_
-#define _AIRPORT_MANAGER_HPP_
+#ifndef _AIRPORT_MANAGER_H_
+#define _AIRPORT_MANAGER_H_
 
 #include <cairomm/context.h>
 #include <vector>
@@ -77,4 +77,4 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _AIRPORT_MANAGER_HPP_
+#endif // _AIRPORT_MANAGER_H_

@@ -21,7 +21,7 @@
 #include <cmath>
 #include <glibmm/fileutils.h>
 
-#include "config/config.hpp"
+#include "config/config.h"
 #include "io/file_manager.hpp"
 #include "io/logger.hpp"
 #include "constants.hpp"
@@ -144,34 +144,6 @@ namespace fgradar {
 
                return dest_pos;
           }
-
-          /**
-           * \param pos Geodesic position we want to translate on screen pos.
-           * \param radar Radar to get properties from.
-           * \return Screen position.
-           *
-           * Using mercator projection, translates geodesic position into screen
-           * position, taking in count zoom and eye position.
-           */
-          Vec2 geod_to_vec2(const Geod &pos, const Radar &radar)
-          {
-               int zoom = pow(2.0, radar.get_zoom());
-
-               int x = (((pos.get_lon_rad() - radar.get_eye_pos().get_lon_rad())
-                         / M_PI) / DEGREES_TO_RADIANS) * zoom
-                    + radar.get_width() / 2;
-
-               int eye_y = (log(tan(radar.get_eye_pos().get_lat_rad()) + 1.0
-                                / cos(radar.get_eye_pos().get_lat_rad())) / M_PI)
-                    / DEGREES_TO_RADIANS * zoom;
-
-               int y = ((-(log(tan(pos.get_lat_rad()) + 1.0
-                               / cos(pos.get_lat_rad())) / M_PI)
-                         / DEGREES_TO_RADIANS) * zoom) + radar.get_height() / 2
-                    + eye_y;
-               
-               return Vec2(x, y);
-          }
           
           /**
            * \param radius Circle radius.
@@ -211,6 +183,7 @@ namespace fgradar {
                     + yorigin;
           }
 
+
           /**
            * \return The pixbuf loaded from a file.
            * Creates a Gdk::Pixbuf from the icon file and returns it.
@@ -219,13 +192,10 @@ namespace fgradar {
           {
                static Glib::RefPtr<Gdk::Pixbuf> icon;
 
-               char size_str[8];
-               sprintf(size_str, "%d", size);
-
                try {
                     icon = Gdk::Pixbuf::create_from_file
-                         (file_manager->get_datadir() + "/icons/icon" + size_str
-                              + ".png");
+                         (file_manager->get_datadir() + "/icons/icon"
+                          + toString<int>(size) + ".png");
                } catch (const Glib::Exception &ex) {
                     LOG(LOG_WARN, ex.what());
                }

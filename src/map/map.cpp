@@ -1,6 +1,6 @@
 /**
- * \file mainwindow.h
- * \brief Header for mainwindow.cpp.
+ * \file map.cpp
+ * \brief Implements class Map.
  */
 
 // Copyright (C) 2012  Fernando García  <fernando.garli@gmail.com>
@@ -18,24 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _MAINWINDOW_H_
-#define _MAINWINDOW_H_
-
-#include <gtkmm/window.h>
+#include "map.hpp"
 
 namespace fgradar {
 
-     class MainWindow : public Gtk::Window {
-     public:
-
-          MainWindow();
-
-          virtual ~MainWindow();
+     Map::Map()
+     {
+          m_projection = new MercatorProj; // Use mercator by default
           
-     private:
+          // If default signal handlers aren't enabled by GLib, we connect the
+          // draw signal to on_draw.
+#ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+          signal_draw().connect(sigc::mem_fun(*this, &Map::on_draw), false);
+#endif
+     }
 
-     };
+     Map::~Map()
+     {
+          if (!m_projection) delete m_projection;
+     }
+
+     bool Map::on_draw(const Cairo::RefPtr<Cairo::Context> &cr)
+     {
+          std::cout << "I am drawing a map, yay!" << std::endl;
+
+          return true;
+     }
      
 } // namespace fgradar
-
-#endif // _MAINWINDOW_H_

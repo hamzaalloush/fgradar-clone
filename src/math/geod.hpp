@@ -1,5 +1,5 @@
 /**
- * \file geod.hpp
+ * \file geod.h
  * \brief Geodesic coordinates.
  */
 
@@ -18,10 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _GEOD_HPP_
-#define _GEOD_HPP_
+#ifndef _GEOD_H_
+#define _GEOD_H_
 
-#include "util/constants.hpp"
+#include "utils/constants.hpp"
 
 namespace fgradar {
 
@@ -184,4 +184,4 @@ namespace fgradar {
 
 }
 
-#endif // _GEOD_HPP_
+#endif // _GEOD_H_

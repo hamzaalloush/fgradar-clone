@@ -1,41 +1,38 @@
 /**
- * \file mainwindow.h
- * \brief Header for mainwindow.cpp.
+ * \file constants.h
+ * \brief Some useful constants.
  */
 
-// Copyright (C) 2012  Fernando García  <fernando.garli@gmail.com>
+// Copyright (C) 2012  Fernando García Liñán  <fernando.garli@gmail.com>
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-   
+
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-   
+
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _MAINWINDOW_H_
-#define _MAINWINDOW_H_
-
-#include <gtkmm/window.h>
+#ifndef _CONSTANTS_H_
+#define _CONSTANTS_H_
 
 namespace fgradar {
 
-     class MainWindow : public Gtk::Window {
-     public:
+     const int EAR_H_RADIUS = 6378; // Equatorial, KM
 
-          MainWindow();
+     const double DEGREES_TO_MILES = 69.11;
+     const double DEGREES_TO_RADIANS = 0.0174532925;
+     const double KILOMETERS_TO_MILES = 0.53995;
+     const double FEETS_TO_METERS = 0.3048;
+     const double FEETS_TO_MILES = 0.000189393939;
 
-          virtual ~MainWindow();
-          
-     private:
+     const int RING_RATE = 10;
+     const int NAVAID_SIZE = 6; // pixels
+}
 
-     };
-     
-} // namespace fgradar
-
-#endif // _MAINWINDOW_H_
+#endif // _CONSTANTS_H_

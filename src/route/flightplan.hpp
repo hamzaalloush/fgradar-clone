@@ -1,5 +1,5 @@
 /**
- * \file flightplan.hpp
+ * \file flightplan.h
  * \brief Header for flightplan.cpp.
  */
 
@@ -18,8 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _FLIGHTPLAN_HPP_
-#define _FLIGHTPLAN_HPP_
+#ifndef _FLIGHTPLAN_H_
+#define _FLIGHTPLAN_H_
 
 #include <iostream>
 #include <vector>
@@ -104,4 +104,4 @@ namespace fgradar {
 
 }
 
-#endif // _FLIGHTPLAN_HPP_
+#endif // _FLIGHTPLAN_H_

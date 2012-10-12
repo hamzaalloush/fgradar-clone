@@ -19,11 +19,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "airport.hpp"
-#include "config/config.hpp"
+#include "config/config.h"
 #include "runway.hpp"
 #include "taxiway.hpp"
-#include "util/utils.hpp"
-#include "util/vec2.hpp"
+#include "utils/utils.hpp"
+#include "utils/vec2.hpp"
 
 namespace fgradar {
 

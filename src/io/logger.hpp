@@ -1,5 +1,5 @@
 /**
- * \file logger.hpp
+ * \file logger.h
  * \brief Header for logger.cpp.
  */
 
@@ -18,12 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _LOGGER_HPP_
-#define _LOGGER_HPP_
+#ifndef _LOGGER_H_
+#define _LOGGER_H_
 
 #include <fstream>
 
-#include "util/singleton.hpp"
+#include "utils/singleton.hpp"
 
 namespace fgradar {
 
@@ -81,4 +81,4 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _LOGGER_HPP_
+#endif // _LOGGER_H_

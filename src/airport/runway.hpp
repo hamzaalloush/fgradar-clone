@@ -1,5 +1,5 @@
 /**
- * \file runway.hpp
+ * \file runway.h
  * \brief Header for runway.cpp.
  */
 
@@ -18,11 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#ifndef _RUNWAY_HPP_
-#define _RUNWAY_HPP_
+#ifndef _RUNWAY_H_
+#define _RUNWAY_H_
 
 #include <iostream>
-#include "util/geod.hpp"
+#include "utils/geod.hpp"
 #include "taxiway.hpp"
 
 namespace fgradar {
@@ -94,4 +94,4 @@ namespace fgradar {
 
 } // namespace fgradar
 
-#endif // _RUNWAY_HPP_
+#endif // _RUNWAY_H_
