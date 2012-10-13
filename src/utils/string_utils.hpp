@@ -23,6 +23,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <vector>
 
 namespace fgradar {
 

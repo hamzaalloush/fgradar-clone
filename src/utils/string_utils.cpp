@@ -25,6 +25,36 @@ namespace fgradar {
      namespace utils {
 
           /**
+           * Splits a string and stores every token in a vector
+           * container. This is based in incrementing pointers.
+           *
+           * \param str String to split.
+           * \param delim Delimiter.
+           * \param container Where we will store all the tokens.
+           * \return A vector containing all the tokens.
+           */
+          std::vector<std::string> &split(const std::string &str, const char delim,
+                                          std::vector<std::string> &container)
+          {
+               const char *str_c = str.c_str();
+               std::string current_token;
+               
+               while (*str_c != '\0') {
+
+                    current_token += *str_c;
+
+                    if (*str_c == delim) {
+                         container.push_back(current_token);
+                         current_token.clear();
+                    }
+                    
+                    str_c++;
+               }
+
+               return container;
+          }
+
+          /**
            * Trims a string by removing white spaces, tabs, endlines etc. from
            * left and right sides. Then creates a sub string with the trimmed
            * content.
