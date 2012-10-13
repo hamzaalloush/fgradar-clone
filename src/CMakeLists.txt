@@ -1,5 +1,4 @@
 foreach(CURR_DIR
-    gui
     io
     map
     math

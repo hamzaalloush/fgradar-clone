@@ -28,11 +28,6 @@ include(cpack_config)
 
 message(STATUS "Checking for libraries... ")
 
-# Check for GTKmm
-find_package(GTKmm REQUIRED)
-include_directories(${GTKmm_INCLUDE_DIRS})
-set(LIBS ${LIBS} ${GTKmm_LIBRARIES})
-
 # Check for Gettext (it is an optional package, it is not required for the
 # compilation).
 find_package(Gettext)

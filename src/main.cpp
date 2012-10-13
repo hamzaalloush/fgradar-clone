@@ -18,14 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <glibmm/main.h>
-#include <glibmm/thread.h>
-#include <gtkmm/application.h>
 #include <iostream>
 
 #include "i18n.hpp"
 
-#include "gui/mainwindow.hpp"
 #include "io/file_manager.hpp"
 #include "io/logger.hpp"
 
@@ -65,19 +61,9 @@ int main(int argc, char *argv[])
      bindtextdomain(PACKAGE_LOWER, "/usr/share/locale");
      textdomain(PACKAGE_LOWER);
      
-     if (!Glib::thread_supported())
-          Glib::thread_init();
-     
      Init();
-     
-     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create
-          (argc, argv, "org.fgradar");
-     
-     MainWindow win;
-     
-     int result = app->run(win);
      
      Shutdown();
      
-     return result;
+     return 0;
 }
