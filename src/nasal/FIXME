@@ -1,0 +1,5 @@
+Once everything works properly, the source history needs to be properly merged using all three repositories:
+	- Andy Ross (github)
+	- simgear (main)
+	- AlgoScore (Nasal modules and custom bindings)
+

@@ -1,0 +1,23 @@
+For FGRadar:
+- port build system to cmake (DONE)
+- make sure that everything works for *nix/Win
+- make the unix module really optional
+- if necessary: port the I/O functions so that import() in driver.nas is supported on Windows, too
+- make sure that the source tree can be easily built standalone AND embedded into other source trees like fgradar
+- merge in more useful stuff from the original AlgoScore repository at: http://svn.gna.org/viewcvs/algoscore/trunk/ 
+- update the gtk bindings for gtk 3.0 (once gtk 3.x has become truly multi-platform!)
+
+
+Misc:
+- update SWIG
+- fork/exec/system/open
+- standalone
+- unit tests (regression testing)
+- git submodule: simgear
+- add libcwd support
+- add google perf tools support
+
+
+standalone purposes:
+- gui scripting (frontends): TerraGear GUI etc
+

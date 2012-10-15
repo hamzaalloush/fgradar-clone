@@ -1,0 +1,7 @@
+#define PACKAGE "${PROJECT_NAME}"
+#define VERSION "${NASAL_VERSION}"
+
+#cmakedefine HAVE_GTK
+#cmakedefine HAVE_PCRE
+#cmakedefine HAVE_READLINE
+#cmakedefine HAVE_SQLITE

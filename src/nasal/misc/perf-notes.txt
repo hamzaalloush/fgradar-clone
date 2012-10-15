@@ -1,0 +1,192 @@
+I tried caching the hashcode in the naStr object, to avoid the
+recomputation each time a symbol lookup is made.  The objperf.nas
+benchmark reported a speed up of 13.59s vs. 13.78s without
+optimization, and 6.71s vs. 7.06s with full optimization.  Or about 5%
+for 5 lines of code.  Probably not worth it.
+
+I thought the depth-first behavior of the closure objects would be an
+issue, but it really isn't.  Getting and setting local variables does
+not require traversing the closure list.  Access to variables in outer
+scopes is generally less common, for obvious reasons.  Traversing the
+whole list when setting a local variable for the first time occurs
+only once.  It is hard to find a real-world use case for code that
+wants to iterate repeatedly over variables in an outer scope, and/or
+sets many local variables without doing significant later computation
+with them.
+
+Combining naFunc and naClosure made sense, and was a good optimization
+both for code size and runtime speed.
+
+Examining objperf some more: The inner loop contains 14 simple
+statements, each of which (in C code) might be expected to take two
+instructions (maybe 1.5 cycles on a modern processor).  Measured on my
+1.8GHz Athlon64, each of these statements takes just about 200 clock
+cycles.  So on the whole the Nasal code is running maybe 130x slower
+than the equivalent C code.  Or (very) roughly at the speed the
+equivalent C code would exhibit when executed on a 33MHz i486.
+
+Consider tail recursion.  The separate call and operand stacks should
+make this easy...
+
+Allocating behaviors.  The following syntax constructions require
+allocation of garbage collected objects:
+ + Creation of new strings with the "~" operator or substr() function
+ + Creating new hashes with the {} construction
+ + Creating new vectors with the [] construction
+ + Binding a function.  Any use of the func keyword allocates an
+   naFunc object for the binding.
+ + All function calls allocate a hash for the namespace, and an arg
+   vector.  Strictly, the call() function does not allocate the arg
+   vector itself...
+
+Maximum speed of a mark/sweep collector: any collection of a large
+data set is obviously going to thrash the CPU cache and be limited by
+main memory bandwidth (corrolary: parallel collection threads on
+different CPUs are not likely to help unless the CPUs have their own
+dedicated memory).  Modern DDR400 memory uses 8 cycles to read 4 64
+bit values into a cache line, and typically comes in dual channel
+configurations (which I *think* are used to make a single 512 bit
+cache line, and not two parallel channels for loading independent
+lines...).  That comes out to 64 byte blocks read at a rate of 50MHz.
+If the in-memory object layout exhibits good locality of reference,
+then that whole cache line will be "used up" before it is spilled out
+to make room for another read and we will be limited by the maximum
+read bandwidth of 64*50 = 3.2 gigabytes per second.  If the objects
+are scattered pessimally, then every 8 byte naRef will require a full
+64 byte read, and the rate drops by a factor of 8 to 400 megabytes per
+second.  Finally, note that the full GC requires two passes over the
+live data; the second pass is done in-order and will definitely be
+able to use the full memory bandwidth.  So a 1 gig set of data would
+take somewhere between 0.6 and 2.8 seconds to collect on a modern
+system.  Multi-cpu systems with parallel memory architectures
+(Opteron) will scale linearly with the number of CPUs.
+
+Fun surprise: changing from the "naive" C stack mark algorithm to the
+"optimized" non-recursive one slowed things down in gcperf.nas by
+about 15%.  It was supposed to use 5x less space for the
+hand-maintained stack, but instead used thousands of times MORE space.
+Why?  The gcperf.nas script creates very "broad" hashes of hashes.  So
+before recursing into the second level, the GC needs to push thousands
+of objects onto the stack; it's maximum size is the maximum reference
+depth times the size of the average object in the reference chain!
+The naive algorithm was "true" depth first, so it used only one entry
+on the stack per object in the chain.  The solution is to keep "state"
+with the mark stack to prevent needlessly pushing many items onto the
+stack at once.
+
+Consider adding an explicit freeObject() interface, so that in
+situations where we know that a reference to an object will not be
+saved it can be added directly to the free lists.  Possibilities would
+include: the local namespace in CODE objects where there are CODE
+constants which would bind to them; the results of ~ operators which
+exist as the left or right side of another binary operator (knowable
+from the parse tree).  Note: you can't collect local arguments without
+doing data flow analysis to make sure they aren't saved off by passing
+the arg vector to a sub function, etc...
+
+Since strings will always be at least MINLEN (16) bytes long, put that
+buffer in the string object.  This saves memory for short strings, and
+wastes only a little for long ones.  And it avoids the allocation
+overhead involved in creating a string with ~.
+
+Optimising local variable and object field lookup times: Interning
+symbols and using a pointer equality test first in hash.c.
+Pre-optimization objperf.nas: 8.622s; post 8.325 (3.6%).  Using an
+immediate index argument to OP_LOCAL instead of a prior OP_PUSHCONST:
+7.12s (14%).  Doing the same for OP_MEMBER gets to 6.38s (+10%).  So
+the total looks to be a 25% speedup.  Not huge, but not bad.  And it
+adds comparatively little code. [Measuring later, more rigorously,
+showed only a 15% speedup.]
+
+Eliminating OP_LINE instructions seemed to get 0.85% speedup in the
+tests above.
+
+Commenting out the stack underflow checks (which are really debugging
+code) gets to 6.01s, or another 6%.
+
+I tried adding an array of 4 naRef objects to the naVec struct as a
+"base" array of minimal size (the idea being to speed up function
+calls by preventing the allocation of the argument lists from hitting
+the heap every time), but that reduced (!) performance by 14%,
+presumably due to cache effects.  Hitting the heap isn't so bad when
+all that data was used just last call.  Leaving all the buffers in
+place means leaving them all on the heap, too.
+
+For compile-time vector and hash generation, instead of pushing each
+element on the stack and doing OP_xAPPEND for each one, use an
+immediate argument for the operator and slurp them all up at once.
+This will be especially good for multi-argument function calls.
+
+In addition to reducing the number of runtime operators, try
+simplifying code.c:run1().  Every cycle in this function adds up.
+...
+INDEED!  Simply moving the contents of run1() into the body of run()
+eliminates a ton of needless pointer indirections and gets us down to
+5.13s, or another 15%.  We're now just 33% slower than perl on
+objperf.
+
+Revisiting the "store hash codes in strings" issue, after all the
+other optimizations, worked GREAT!  We are now down to 4.5s, for
+another 15% speed increase.  This was apparently always a good idea,
+it was just drowned in the overhead uncovered by other optimizations.
+
+Writing a (comparatively small) special case naHash_sym() lookup
+function got another huge increase.  This mechanism is tried first,
+and is allowed to assume that the key is always a string, always has
+its hashcode precomputed, and that object identity is the only
+equality that is needed.  This gets us from 4.5s to 3.6s on objperf,
+so we're now beating perl (!) with full optimizations.  Using only
+-O2, we're tying it.
+
+The Frame object's args field is unused (another relic from past
+optimizations).  Yank it.  Ditto for the obj field.  The line field is
+already going away, so that shrinks a frame down to just
+func/locals/ip/bp.
+
+Now it's on to fib.nas -- the test of function call overhead.  Perl is
+beating nasal by a about 2.2:1 here (15s vs. 6.8s).  My original
+thought was that the loss was caused by GC overhead in the allocation
+of all the arguments vectors and local variable hashes.  Nope.
+Changing GC parameters to make it run less often had almost no effect.
+Running gprof confirms it -- naGarbageCollect makes up only a tiny
+fraction of the run time of the program.  This is actually *good*
+news, because the bytecode interpreter is easier to optimize than the
+garbage collector (which is already about as good as it's going to
+get, IMHO).
+
+The top culprits were numify, PUSH, naVec_append, (hash.c) find, and
+evalBinaryNumeric, followed by setupFuncall.  The PUSH and
+naVec_append calls all have to do with the arguments list, so perhaps
+I should try changing OP_CALL and OP_MCALL to take an immediate
+representing the number of arguments, and copy these directly off of
+the stack.
+
+Also, the naVec_append() calls in setupFuncall are not necessary.  Try
+saving those off in the context object...  Not sure how important this
+is.  Update: Not very.  Changing the "save" operation to a pair of
+naObj* in the context object (hard to imaging a faster way to save
+something than storing two pointers) got only 1% (or 166ms) in
+fib.nas.
+
+The gprof run also produced a weird result: the naHash_get calls
+outnumbered the naHash_sym calls.  Why???  Figured it out: the "fib"
+symbol is not local, it's in the outer namespace.  Which means that
+the _sym call fails, then the first (!) _get call needs to fail before
+the second _get call on the outer scope succeeds.  This is actually a
+performance regression -- it would be faster if we were not using
+naHash_sym().
+ 
+Changing the calling conventions to push the object, function, and
+then all the arguments on the stack and then build the frame from
+there (with no interrim VECAPPENDs) was good for 10% in fib.nas, and
+even more when calling functions with more than 1 argument.  Still at
+11.397s vs. perl's 6.773s though.
+
+Go through the bytecode inner loop and strip out all the needless POP
+and PUSH calls, using stuff on the stack where possible.
+
+Changing the objperf benchmark to use 7x more reads than writes showed
+perl with a pretty huge lead, but that turns out to be due to loop
+overhead.  Unrolling the read loop 7 times brings the two interpreters
+back into a tie.  Maybe should consider doing ++/-- operators for
+performance reasons...
