@@ -3,7 +3,7 @@
 
 #include <simgear/structure/subsystem_mgr.hxx>
 
-class FGApplication : public SGSubsystem {
+class FGApplication : public SGSubsystemMgr {
 public:
 protected:
 private:
