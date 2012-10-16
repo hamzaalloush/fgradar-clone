@@ -9,7 +9,14 @@ endforeach()
 include_directories( ${SIMGEAR_INCLUDE_DIR} )
 include_directories( "simgear/structure" )
 
-add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS} main.cpp FGRadarApplication.hxx FGRadarApplication.cxx simgear/structure/FGGLApplication.cxx i18n.hpp)
+add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS} main.cpp 
+							FGRadarApplication.hxx 
+							FGRadarApplication.cxx 
+							simgear/structure/FGGLApplication.cxx 
+							i18n.hpp
+							multiplayer/traffic.hxx
+							multiplayer/traffic.cxx
+							)
 target_link_libraries(${PACKAGE_LOWER} ${LIBS})
 
 target_link_libraries(fgradar

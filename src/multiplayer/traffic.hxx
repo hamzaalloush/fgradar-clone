@@ -4,6 +4,10 @@
 
  class FGMultiplayerTraffic : public SGSubsystem {
  public:
+	FGMultiplayerTraffic();
+	~FGMultiplayerTraffic();
+
+	virtual void update(double);
  protected:
  private:
  };

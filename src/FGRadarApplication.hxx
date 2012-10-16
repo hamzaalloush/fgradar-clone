@@ -30,18 +30,15 @@ class FGRadarApplication : public FGGLApplication {
 public:
   FGRadarApplication( int argc, char ** argv );
   ~FGRadarApplication();
-
   void Run();
-
+  
 protected:
-  virtual void update(double);
+  //virtual void update(double);
   virtual void Key( unsigned char key, int x, int y );
   virtual void Idle();
 //  virtual void Display();
   virtual void Reshape( int width, int height );
-
-  virtual void Init();
-
+  void Init();
   double Sleep();
 
   //SGSharedPtr<FGPanel> panel;

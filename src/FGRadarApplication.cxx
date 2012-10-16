@@ -50,6 +50,10 @@
 //#include "panel_io.hxx"
 #include "ApplicationProperties.hxx"
 
+// Subsystems:
+
+#include "multiplayer/traffic.hxx"
+
 using namespace std;
 
 inline static string ParseArgs( int argc, char ** argv, const string & token )
@@ -139,12 +143,6 @@ FGRadarApplication::FGRadarApplication( int argc, char ** argv ) :
 
   simgear::ResourceManager::instance()->addBasePath(ApplicationProperties::root);
 
-  /*
-  if( panelFilename.length() == 0 ) {
-    cerr << "Need a panel filename. Use --panel=path_to_filename" << endl; 
-    throw exception();
-  }*/
-
   #if 0
   // see if we got a valid fgdata path
   SGPath BaseCheck(ApplicationProperties::root);
@@ -181,21 +179,24 @@ FGRadarApplication::FGRadarApplication( int argc, char ** argv ) :
 
   SGPropertyNode_ptr n;
   //if( (n = ApplicationProperties::Properties->getNode( "panel" )) != NULL )
-   // panel = FGReadablePanel::read( n );
+  // panel = FGReadablePanel::read( n );
 
   //protocol = new FGPanelProtocol( ApplicationProperties::Properties->getNode( "communication", true ) );
   //protocol->init();
+
+
+  //TODO: This is where all subsystems should be added and initialized: 
+  // uses the SGSubsystemMgr interface: http://simgear.sourceforge.net/doxygen/subsystem__mgr_8cxx_source.html
+  add("fg-mp-traffic", new FGMultiplayerTraffic(), GENERAL, 0.5);  //TODO: new() leaks here - should be using SGSharedPtr?
+  //add("nasal", new FGNasalSys(), GENERAL, 0.5);
+  //add("i/o", new FGIO, GENERAL, 0.5);
+  init();
+
 }
 
 FGRadarApplication::~FGRadarApplication()
 {
-}
-
-void FGRadarApplication::update(double dt) 
-{
-
-  double framerate = ApplicationProperties::Properties->getNode( "/sim/frame-rate", true )->getDoubleValue();
-  std::cout << "Updating FGRadar...." << std::endl;
+ // TODO: clean up all subsystems, delete pointers
 }
 
 void FGRadarApplication::Run()
@@ -221,7 +222,6 @@ void FGRadarApplication::Init()
   glAlphaFunc(GL_GREATER, 0.1);
   glutSetCursor( GLUT_CURSOR_NONE );
   //ApplicationProperties::fontCache.initializeFonts();
-  //TODO: This is where all subsystems should be added and initialized
 }
 
 void FGRadarApplication::Reshape( int width, int height )
@@ -239,7 +239,7 @@ void FGRadarApplication::Idle()
   if( dt == 0 )
     return;
 
-  update(0); //FIXME: compute dt properly
+  update(dt);
   glutSwapBuffers();
 
   static double dsum = 0.0;
