@@ -191,6 +191,11 @@ FGRadarApplication::~FGRadarApplication()
 {
 }
 
+void FGRadarApplication::update(double dt) 
+{
+  std::cout << "Updating FGRadar...." << std::endl;
+}
+
 void FGRadarApplication::Run()
 {
   int mode = GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE;
@@ -231,9 +236,7 @@ void FGRadarApplication::Idle()
   if( dt == 0 )
     return;
 
-  //if( panel != NULL )
-   // panel->update( dt );
-
+  update(0); //FIXME: compute dt properly
   glutSwapBuffers();
 
   /*

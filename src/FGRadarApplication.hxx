@@ -34,6 +34,7 @@ public:
   void Run();
 
 protected:
+  virtual void update(double);
   virtual void Key( unsigned char key, int x, int y );
   virtual void Idle();
 //  virtual void Display();

@@ -18,7 +18,9 @@
 #ifndef __FGGLAPPLICATION_HXX
 #define __FGGLAPPLICATION_HXX
 
-class FGGLApplication {
+#include "FGApplication.hxx"
+
+class FGGLApplication : public FGApplication {
 public:
   FGGLApplication( const char * name, int argc, char ** argv );
   virtual ~FGGLApplication();
