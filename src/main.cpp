@@ -25,6 +25,8 @@
 #include "io/file_manager.hpp"
 #include "io/logger.hpp"
 
+#include "FGRadarApplication.hxx"
+
 using namespace fgradar;
 
 namespace {
@@ -57,12 +59,21 @@ namespace {
 
 int main(int argc, char *argv[])
 {
+     using namespace std;
+
      setlocale(LC_ALL, "");
      bindtextdomain(PACKAGE_LOWER, "/usr/share/locale");
      textdomain(PACKAGE_LOWER);
      
      Init();
-     
+     try {
+      FGRadarApplication app(argc,argv);
+      app.Run();
+      return 0;
+     }
+     catch( ... ) {
+      cerr << "Sorry, your program terminated." << endl;
+     }
      Shutdown();
      
      return 0;

@@ -28,6 +28,13 @@ include(cpack_config)
 
 message(STATUS "Checking for libraries... ")
 
+set (SIMGEAR_VERSION 2.9.0)
+find_package(SimGear ${SIMGEAR_VERSION} REQUIRED)
+set(CMAKE_REQUIRED_INCLUDES ${SIMGEAR_INCLUDE_DIR})
+message(STATUS "SimGear includes found at:" ${SIMGEAR_INCLUDE_DIR})
+
+find_package(GLUT REQUIRED)
+
 # Check for Gettext (it is an optional package, it is not required for the
 # compilation).
 find_package(Gettext)
