@@ -193,6 +193,8 @@ FGRadarApplication::~FGRadarApplication()
 
 void FGRadarApplication::update(double dt) 
 {
+
+  double framerate = ApplicationProperties::Properties->getNode( "/sim/frame-rate", true )->getDoubleValue();
   std::cout << "Updating FGRadar...." << std::endl;
 }
 
@@ -219,6 +221,7 @@ void FGRadarApplication::Init()
   glAlphaFunc(GL_GREATER, 0.1);
   glutSetCursor( GLUT_CURSOR_NONE );
   //ApplicationProperties::fontCache.initializeFonts();
+  //TODO: This is where all subsystems should be added and initialized
 }
 
 void FGRadarApplication::Reshape( int width, int height )
@@ -238,11 +241,6 @@ void FGRadarApplication::Idle()
 
   update(0); //FIXME: compute dt properly
   glutSwapBuffers();
-
-  /*
-  if( protocol != NULL )
-    protocol->update( dt );
-  */
 
   static double dsum = 0.0;
   static unsigned cnt = 0;
