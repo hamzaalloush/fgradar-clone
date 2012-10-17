@@ -21,9 +21,7 @@
 #ifndef _FGRADAR_HPP_
 #define _FGRADAR_HPP_
 
-#include <simgear/structure/subsystem_mgr.hxx>
-
-#include "simgear/structure/SGApplication.hxx"
+#include <simgear/structure/SGApplication.hxx>
 
 namespace fgradar {
 
