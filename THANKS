@@ -1,1 +1,12 @@
-FGRadar uses code from the SimGear and FlightGear projects
+FGRadar gratuitously uses code from the following OSS projects:
+
+	- Nasal scripting language: http://www.plausible.org/nasal
+	- SimGear http://www.simgear.org
+	- FlightGear http://www.flightgear.org
+	- AlgoScore http://kymatica.com/Software/AlgoScore
+	- GTK http://www.gtk.org
+	- CAIRO http://www.cairographics.org
+
+We'd like to thank all the people involved in these projects!
+
+
