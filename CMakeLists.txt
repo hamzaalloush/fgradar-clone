@@ -38,17 +38,6 @@ set(LIBS ${LIBS}
   ${SIMGEAR_CORE_LIBRARIES}
   ${SIMGEAR_CORE_LIBRARY_DEPENDENCIES})
 
-# Check for Gettext (it is an optional package, it is not required for the
-# compilation).
-find_package(Gettext)
-if(GETTEXT_FOUND)
-  set(I18N_ENABLED TRUE)
-  message(STATUS "Gettext found, internationalization available.")
-else()
-  set(I18N_ENABLED FALSE)
-  message(WARNING "Gettext NOT found, internationalization NOT available.")
-endif()
-
 if(UNIX)
   add_definitions(-Wall)
 endif()

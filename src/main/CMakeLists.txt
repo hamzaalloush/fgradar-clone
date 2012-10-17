@@ -6,6 +6,5 @@ set(SOURCES ${SOURCES}
 
 set(HEADERS ${HEADERS}
   main/fgradar_app.hxx
-  main/i18n.hxx
 
   PÀRENT_SCOPE)
