@@ -28,6 +28,13 @@ public:
       * class just has to worry about implementing all the virtual functions it
       * needs so they get called once they are called.
       *
+      * Don't forget to call this constructor from the derived class by doing:
+      *
+      * \code
+      *   MyApplication(int argc, char **argv) :
+      *       SGApplication(argc, argv)
+      * \endcode
+      *
       * \param argc Number of arguments from main().
       * \param argv Arguments from main().
       */
