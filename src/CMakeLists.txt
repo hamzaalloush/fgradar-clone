@@ -3,7 +3,8 @@ foreach(CURR_DIR
   add_subdirectory(${CURR_DIR})
 endforeach()
 
-add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS})
+add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS}
+  simgear/structure/SGApplication.hxx)
 
 target_link_libraries(${PACKAGE_LOWER} ${LIBS})
 

@@ -24,31 +24,14 @@ namespace fgradar {
 
      FgradarApp *fgradar_app = NULL;
 
-     /**
-      * \brief Constructor.
-      *
-      * Create a new FGRadar application. Initialize everything, parses
-      * command line arguments etc.
-      *
-      * @param argc Number of arguments.
-      * @param argv Arguments themselves.
-      */
      FgradarApp::FgradarApp(int argc, char **argv) :
-          m_subsystem_mgr(NULL)
+          SGApplication(argc, argv)
      {
-          m_subsystem_mgr = new SGSubsystemMgr;
-          createSubsystems();
-          
-          init();
      }
 
-     /**
-      * \brief Destructor.
-      * Free Previously allocated memory.
-      */
      FgradarApp::~FgradarApp()
      {
-          if (!m_subsystem_mgr) delete m_subsystem_mgr;
+
      }
 
      void FgradarApp::run()

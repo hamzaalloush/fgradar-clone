@@ -23,6 +23,8 @@
 
 #include <simgear/structure/subsystem_mgr.hxx>
 
+#include "simgear/structure/SGApplication.hxx"
+
 namespace fgradar {
 
      /**
@@ -32,35 +34,19 @@ namespace fgradar {
       * deletes everything. This top-level class also manages the subsystem
       * manager.
       */
-     class FgradarApp {
+     class FgradarApp : public SGApplication {
      public:
 
           FgradarApp(int argc, char **argv);
           virtual ~FgradarApp();
 
-          void run();
+          virtual void run();
+        
+     protected:
 
-          /**
-           * \return A pointer to the subsystem manager.
-           */
-          SGSubsystemMgr *get_subsystem_mgr()       const {return m_subsystem_mgr;}
-
-          /**
-           * \param name The name of the subsystem we want to get.
-           * \return The retrieved subsystem.
-           */
-          SGSubsystem    *get_subsystem(char *name) const
-               {return m_subsystem_mgr->get_subsystem(name);}
-          
-     private:
-
-          /** The SimGear subsystem manager. Manages all the subsystems by
-              initializing, updating, removing them etc. */
-          SGSubsystemMgr *m_subsystem_mgr;
-
-          void init();
-          void parseCmdArguments(int argc, char **argv);
-          void createSubsystems();
+          virtual void init();
+          virtual void parseCmdArguments(int argc, char **argv);
+          virtual void createSubsystems();
      };
 
      extern FgradarApp *fgradar_app;
