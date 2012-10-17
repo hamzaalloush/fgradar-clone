@@ -6,21 +6,9 @@
 class SGApplication {
 public:
 
-     SGApplication(int argc, char **argv) :
-          m_subsystem_mgr(NULL) {
-
-          parseCmdArguments(argc, argv);
-
-          m_subsystem_mgr = new SGSubsystemMgr;
-          createSubsystems();
-
-          init();
-     }
+     SGApplication(int argc, char **argv);
+     virtual ~SGApplication();
      
-     virtual ~SGApplication() {
-          if (!m_subsystem_mgr) delete m_subsystem_mgr;
-     }
-
      virtual void run() = 0;
 
      SGSubsystemMgr *get_subsystem_mgr()       const {return m_subsystem_mgr;}
