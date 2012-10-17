@@ -20,61 +20,26 @@
 
 #include <iostream>
 
+#include "fgradar.hpp"
 #include "i18n.hpp"
-
-#include "io/file_manager.hpp"
-#include "io/logger.hpp"
-
-#include "FGRadarApplication.hxx"
 
 using namespace fgradar;
 
-namespace {
-
-     /**
-      * Initialize program.
-      * Allocate memory for some modules, initialize singletons etc.
-      */
-     void Init()
-     {
-          file_manager = new FileManager;
-
-          if (!Singleton<Logger>::GetInstance().Init("log.txt", LOG_WARN)) {
-               std::cerr << "Failed to initialize log, no log messages will"
-                    "be outputted." << std::endl;
-          }
-     }
-
-     /**
-      * Shutdown program.
-      * Free previously allocated memory. Some modules get free automagically,
-      * so we don't need to add them here (for example, singletons).
-      */
-     void Shutdown()
-     {
-          if (!file_manager) delete file_manager;
-     }
-
-}
-
 int main(int argc, char *argv[])
 {
-     using namespace std;
-
      setlocale(LC_ALL, "");
      bindtextdomain(PACKAGE_LOWER, "/usr/share/locale");
      textdomain(PACKAGE_LOWER);
      
-     Init();
      try {
-      FGRadarApplication app(argc,argv);
-      app.Run();
-      return 0;
+          fgradar_app = new FgradarApp(argc, argv);
+          fgradar_app->run();
      }
-     catch( ... ) {
-      cerr << "Sorry, your program terminated." << endl;
+     catch (...) {
+          std::cerr << "Something went wrong. Aborting..." << std::endl;
      }
-     Shutdown();
+
+     delete fgradar_app;
      
      return 0;
 }
