@@ -1,16 +1,9 @@
 foreach(CURR_DIR
-    io
-    map
-    math
-    utils)
+    main)
   add_subdirectory(${CURR_DIR})
 endforeach()
 
-add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS}
-  fgradar.cpp
-  fgradar.hpp
-  i18n.hpp
-  main.cpp)
+add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS})
 
 target_link_libraries(${PACKAGE_LOWER} ${LIBS})
 

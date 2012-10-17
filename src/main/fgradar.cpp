@@ -68,7 +68,7 @@ namespace fgradar {
 
      void FgradarApp::createSubsystems()
      {
-          
+
      }
      
 } // namespace fgradar
