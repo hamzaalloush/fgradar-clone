@@ -1,10 +1,21 @@
-set(SOURCES ${SOURCES}
-  main/fgradar_app.cxx
-  main/main.cxx
+set(SOURCES
+  fgradar_app.cxx
+  main.cxx
+)
 
-  PARENT_SCOPE)
+set(HEADERS
+  fgradar_app.hxx
+)
 
-set(HEADERS ${HEADERS}
-  main/fgradar_app.hxx
+add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS})
 
-  PÀRENT_SCOPE)
+foreach(MODULE
+    simgear)
+  target_link_libraries(${PACKAGE_LOWER} ${MODULE})
+endforeach()
+
+# Link the thrid-party libraries, not our source ones
+target_link_libraries(${PACKAGE_LOWER} ${LIBS})
+
+install(TARGETS ${PACKAGE_LOWER} RUNTIME DESTINATION bin)
+
