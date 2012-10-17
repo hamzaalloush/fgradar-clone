@@ -1,12 +1,11 @@
 set(SOURCES ${SOURCES}
-  main/fgradar.cpp
-  main/main.cpp
+  main/fgradar_app.cxx
+  main/main.cxx
 
   PARENT_SCOPE)
 
 set(HEADERS ${HEADERS}
-  main/fgradar.hpp
-  main/i18n.hpp
-  main/props.hpp
+  main/fgradar_app.hxx
+  main/i18n.hxx
 
   PÀRENT_SCOPE)
