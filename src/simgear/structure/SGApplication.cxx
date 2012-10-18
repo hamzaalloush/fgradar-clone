@@ -19,7 +19,7 @@
 
 #include "SGApplication.hxx"
 
-SGPropertyNode *SGApplication::m_property_tree = NULL;
+SGSharedPtr<SGPropertyNode> SGApplication::m_property_tree = new SGPropertyNode;
 
 /**
  * Allocate memory and initialize variables. argc and argv are given so the user
@@ -33,7 +33,6 @@ SGApplication::SGApplication(int argc, char **argv) :
      // subsystems can use it later
      sglog().setLogLevels(SG_ALL, SG_WARN);
      
-     m_property_tree = new SGPropertyNode;
      m_subsystem_mgr = new SGSubsystemMgr;
 }
 
@@ -43,7 +42,6 @@ SGApplication::SGApplication(int argc, char **argv) :
 SGApplication::~SGApplication()
 {
      delete m_subsystem_mgr;
-     delete m_property_tree;
 }
 
 /**

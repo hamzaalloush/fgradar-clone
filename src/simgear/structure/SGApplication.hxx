@@ -18,6 +18,7 @@
 #ifndef __SGAPPLICATION_HXX
 #define __SGAPPLICATION_HXX
 
+#include <simgear/structure/SGSharedPtr.hxx>
 #include <simgear/props/props.hxx>
 #include <simgear/structure/subsystem_mgr.hxx>
 
@@ -121,7 +122,7 @@ protected:
       * it static so there is only one property tree in the whole program,
       * even if by accident there are two subsystems.
       */
-     static SGPropertyNode *m_property_tree;
+     static SGSharedPtr<SGPropertyNode> m_property_tree;
 
      /**
       * \brief Initialization code should be placed here.
