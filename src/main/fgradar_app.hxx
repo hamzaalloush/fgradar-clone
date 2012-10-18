@@ -43,8 +43,6 @@ namespace fgradar {
           FgradarApp(int argc, char **argv);
           virtual ~FgradarApp();
 
-          virtual void run();
-        
      protected:
 
           virtual void init();

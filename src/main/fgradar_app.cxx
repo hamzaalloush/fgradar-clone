@@ -40,12 +40,6 @@ namespace fgradar {
      }
 
      void
-     FgradarApp::run()
-     {
-
-     }
-
-     void
      FgradarApp::init()
      {
 

@@ -23,6 +23,7 @@
  * not) by the derived class.
  */
 SGApplication::SGApplication(int argc, char **argv) :
+     m_quit_flag(false),
      m_subsystem_mgr(NULL)
 {
      parseCmdArguments(argc, argv);
@@ -41,4 +42,32 @@ SGApplication::SGApplication(int argc, char **argv) :
 SGApplication::~SGApplication()
 {
      if (!m_subsystem_mgr) delete m_subsystem_mgr;
+}
+
+/**
+ * Run the main loop until 'm_quit_flag' is true.
+ * This simple main loop updates all the subsystems (by updating the subsystem
+ * manager). The update function actually needs the delta time, but FGRadar
+ * doesn't need a lot of resources and it isn't a heavy 3D program, so passing 0
+ * is a good solution.
+ */
+void
+SGApplication::run()
+{
+     while (!m_quit_flag) {
+
+          // Update subsystems
+          m_subsystem_mgr->update(0);
+     }
+}
+
+/**
+ * Quit the program by setthing 'm_quit_flag' to true.
+ * In the future, some things might be added, that's why it is recommended to
+ * call this function instead of changing 'm_quit_flag' manually.
+ */
+void
+SGApplication::quit()
+{
+     m_quit_flag = true;
 }

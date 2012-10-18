@@ -45,11 +45,26 @@ public:
      /**
       * \brief Runs the main application loop.
       *
-      * This function isn't called internally by SGApplication. Instead, it is
-      * needed that it is called outside the class. Since this is a pure virtual
-      * function, the derived class needs to implement it.
+      * This function isn't called internally by SGApplication, so you need to
+      * call from outside (main() for example). If you want to define your
+      * own methods here, make sure you don't override what it does by doing:
+      *
+      * \code
+      *   SGApplication::run();
+      * \endcode
       */
-     virtual void run() = 0;
+     virtual void run();
+
+     /**
+      * \brief Quits the application.
+      *
+      * This should be called when you want to exit the application, instead of
+      * making 'm_quit_flag' true. This allows other stuff to be done here.
+      *
+      * This function already does something, so if you want to redefine it in
+      * your inherited class, don't forget to call this one from inside.
+      */
+     virtual void quit();
 
      SGSubsystemMgr *get_subsystem_mgr() {return m_subsystem_mgr;}
 
@@ -57,6 +72,12 @@ public:
           {return m_subsystem_mgr->get_subsystem(name);}
 
 protected:
+
+     /**
+      * Application will quit when this flag is true. It is recommended to use
+      * the function quit() in order to quit the application.
+      */
+     bool            m_quit_flag;
 
      /**
       * The subsystem manager. Controls the life cycle of every subsystem,
