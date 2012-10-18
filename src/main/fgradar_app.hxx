@@ -30,13 +30,6 @@
 
 namespace fgradar {
 
-     /**
-      * \brief Main application class.
-      *
-      * Inherits from SGApplication. Manages the life-cycle of all the
-      * subsystems via the subsystem_mgr, controls the initialization and
-      * deletion of the program and parses command line arguments.
-      */
      class FgradarApp : public SGApplication {
      public:
 
@@ -46,8 +39,10 @@ namespace fgradar {
      protected:
 
           virtual void init();
-          virtual void parseCmdArguments(int argc, char **argv);
-          virtual void createSubsystems();
+
+     private:
+
+          void createSubsystems();
      };
 
      extern FgradarApp *fgradar_app;

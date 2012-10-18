@@ -20,13 +20,23 @@
 
 #include <simgear/structure/subsystem_mgr.hxx>
 
+/**
+ * \brief Defines a base application class.
+ *
+ * This class is intended to be derived into another type of application. There
+ * are another alternatives you can choose from. For example, SG_OSGApplication
+ * is good for OSG usage, or SG_GLApplication for OpenGL/GLUT applications.
+ *
+ * If you want to use another library or it is a CLI application, it is
+ * recommended that you use this one directly.
+ */
 class SGApplication {
 public:
 
      /**
-      * The constructor calls all the initialization functions. The derived
-      * class just has to worry about implementing all the virtual functions it
-      * needs so they are called from here.
+      * This constructor performs all the initialization code (only memory
+      * allocation and variable initialization, other things should go in
+      * init()).
       *
       * Don't forget to call this constructor from the derived class by doing:
       *
@@ -45,9 +55,11 @@ public:
      /**
       * \brief Runs the main application loop.
       *
-      * This function isn't called internally by SGApplication, so you need to
-      * call from outside (main() for example). If you want to define your
-      * own methods here, make sure you don't override what it does by doing:
+      * This function should be called from outside the derived class, from
+      * main() for example. To exit the loop, use the 'quit' function.
+      *
+      * If you plan adding other stuff that isn't done in the SGApplication
+      * implementation, make sure you add this in your derived class run():
       *
       * \code
       *   SGApplication::run();
@@ -61,8 +73,8 @@ public:
       * This should be called when you want to exit the application, instead of
       * making 'm_quit_flag' true. This allows other stuff to be done here.
       *
-      * This function already does something, so if you want to redefine it in
-      * your inherited class, don't forget to call this one from inside.
+      * Don't forget to call this function from your derived class if you plan
+      * adding custom stuff.
       */
      virtual void quit();
 
@@ -86,9 +98,17 @@ protected:
       */
      SGSubsystemMgr *m_subsystem_mgr;
 
+     /**
+      * \brief Initialization code should be placed here.
+      *
+      * Memory allocation and variable initialization should be placed in
+      * constructor, other stuff should be here.
+      *
+      * This function is not called by SGApplication, so you need to call it
+      * from a derived class, preferably in the end of the constructor, after
+      * all memory allocation.
+      */
      virtual void init() {}
-     virtual void parseCmdArguments(int argc, char **argv) {}
-     virtual void createSubsystems() {}
 };
 
 #endif // __SGAPPLICATION_HXX

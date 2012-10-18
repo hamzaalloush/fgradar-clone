@@ -1,6 +1,6 @@
 /**
- * \file fgradar.cxx
- * \brief Implements class FgradarApp.
+ * \file props.hxx
+ * \brief Header for props.cxx.
  *
  * \ingroup main
  */
@@ -23,35 +23,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "fgradar_app.hxx"
 #include "props.hxx"
 
 namespace fgradar {
 
-     FgradarApp *fgradar_app = NULL;
+     SGPropertyNode *Properties::m_property_tree = NULL;
 
-     FgradarApp::FgradarApp(int argc, char **argv) :
-          SGApplication(argc, argv)
+     Properties::Properties()
      {
-          init();
+          m_property_tree = new SGPropertyNode;
      }
 
-     FgradarApp::~FgradarApp()
+     Properties::~Properties()
+     {
+          if (!m_property_tree) delete m_property_tree;
+     }
+
+     void
+     Properties::init()
      {
 
      }
 
      void
-     FgradarApp::init()
+     Properties::update(double delta_time_sec)
      {
-          createSubsystems();
 
-          m_subsystem_mgr->init();
      }
-
-     void FgradarApp::createSubsystems()
-     {
-          m_subsystem_mgr->add("props", new Properties, SGSubsystemMgr::GENERAL);
-     }
-
+     
 } // namespace fgradar

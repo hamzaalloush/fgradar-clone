@@ -18,26 +18,20 @@
 #include "SGApplication.hxx"
 
 /**
- * Parse command line arguments from main. Allocate memory to the subsystem
- * manager and create subsystems. Then call the init() function, implemented (or
- * not) by the derived class.
+ * Allocate memory and initialize variables. argc and argv are given so the user
+ * can use them or not, but it is not compulsory.
  */
 SGApplication::SGApplication(int argc, char **argv) :
      m_quit_flag(false),
      m_subsystem_mgr(NULL)
 {
-     parseCmdArguments(argc, argv);
-     
      m_subsystem_mgr = new SGSubsystemMgr;
-     createSubsystems();
-     
-     init();
 }
 
 /**
  * Free previously allocated memory (check for NULL; only free if it is NOT
- * NULL). Cases where a pointer can still be new is when the user interrupted
- * the program before the constructor gets executed.
+ * NULL). A case where a pointer can still be NULL can occur when the user
+ * interrupted the program before the constructor gets executed.
  */
 SGApplication::~SGApplication()
 {
