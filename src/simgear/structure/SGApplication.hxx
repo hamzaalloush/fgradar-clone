@@ -18,6 +18,7 @@
 #ifndef __SGAPPLICATION_HXX
 #define __SGAPPLICATION_HXX
 
+#include <simgear/props/props.hxx>
 #include <simgear/structure/subsystem_mgr.hxx>
 
 /**
@@ -78,6 +79,22 @@ public:
       */
      virtual void quit();
 
+     /**
+      * Get a property tree node. Once you have the node, you can access
+      * its value by calling 'get<type>Value', where in type you specify
+      * the type you want to get.
+      *
+      * You can also specify if you want the node to be created if it
+      * doesn't exist.
+      *
+      * \param path Path to the node relative to root.
+      * \param create If the node should be created if it doesn't exist.
+      * \return The node.
+      */
+     static SGPropertyNode *getNode(const char *path, bool create) {
+          return m_property_tree->getNode(path, create);
+     }
+
      SGSubsystemMgr *get_subsystem_mgr() {return m_subsystem_mgr;}
 
      SGSubsystem *get_subsystem(const char *name)
@@ -89,14 +106,22 @@ protected:
       * Application will quit when this flag is true. It is recommended to use
       * the function quit() in order to quit the application.
       */
-     bool            m_quit_flag;
+     bool                   m_quit_flag;
 
      /**
       * The subsystem manager. Controls the life cycle of every subsystem,
       * manages addition and removal of subsystems and keeps them always
       * accessible.
       */
-     SGSubsystemMgr *m_subsystem_mgr;
+     SGSubsystemMgr        *m_subsystem_mgr;
+
+     /**
+      * This is the property tree. It is just a node to the root of the
+      * property tree, so all the property tree is a child of it. We make
+      * it static so there is only one property tree in the whole program,
+      * even if by accident there are two subsystems.
+      */
+     static SGPropertyNode *m_property_tree;
 
      /**
       * \brief Initialization code should be placed here.

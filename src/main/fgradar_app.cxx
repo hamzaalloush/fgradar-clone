@@ -24,7 +24,6 @@
  */
 
 #include "fgradar_app.hxx"
-#include "props.hxx"
 
 namespace fgradar {
 
@@ -51,7 +50,7 @@ namespace fgradar {
 
      void FgradarApp::createSubsystems()
      {
-          m_subsystem_mgr->add("props", new Properties, SGSubsystemMgr::GENERAL);
+
      }
 
 } // namespace fgradar

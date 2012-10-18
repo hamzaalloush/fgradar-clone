@@ -15,7 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <simgear/debug/logstream.hxx>
+
 #include "SGApplication.hxx"
+
+SGPropertyNode *SGApplication::m_property_tree = NULL;
 
 /**
  * Allocate memory and initialize variables. argc and argv are given so the user
@@ -25,6 +29,11 @@ SGApplication::SGApplication(int argc, char **argv) :
      m_quit_flag(false),
      m_subsystem_mgr(NULL)
 {
+     // Initializing the log should be the first thing we do, so other
+     // subsystems can use it later
+     sglog().setLogLevels(SG_ALL, SG_WARN);
+     
+     m_property_tree = new SGPropertyNode;
      m_subsystem_mgr = new SGSubsystemMgr;
 }
 
@@ -36,6 +45,7 @@ SGApplication::SGApplication(int argc, char **argv) :
 SGApplication::~SGApplication()
 {
      if (!m_subsystem_mgr) delete m_subsystem_mgr;
+     if (!m_property_tree) delete m_property_tree;
 }
 
 /**
@@ -63,5 +73,6 @@ SGApplication::run()
 void
 SGApplication::quit()
 {
+     SG_LOG(SG_GENERAL, SG_INFO, "SGApplication quit signal");
      m_quit_flag = true;
 }

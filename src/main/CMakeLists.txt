@@ -1,12 +1,10 @@
 set(SOURCES
   fgradar_app.cxx
   main.cxx
-  props.cxx
 )
 
 set(HEADERS
   fgradar_app.hxx
-  props.hxx
 )
 
 add_executable(${PACKAGE_LOWER} ${SOURCES} ${HEADERS})
