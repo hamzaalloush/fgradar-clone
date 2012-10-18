@@ -114,7 +114,7 @@ protected:
       * manages addition and removal of subsystems and keeps them always
       * accessible.
       */
-     SGSubsystemMgr        *m_subsystem_mgr;
+     SGSharedPtr<SGSubsystemMgr>        m_subsystem_mgr;
 
      /**
       * This is the property tree. It is just a node to the root of the

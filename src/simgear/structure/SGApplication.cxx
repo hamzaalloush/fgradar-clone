@@ -27,13 +27,11 @@ SGSharedPtr<SGPropertyNode> SGApplication::m_property_tree = new SGPropertyNode;
  */
 SGApplication::SGApplication(int argc, char **argv) :
      m_quit_flag(false),
-     m_subsystem_mgr(NULL)
+     m_subsystem_mgr(new SGSubsystemMgr)
 {
      // Initializing the log should be the first thing we do, so other
      // subsystems can use it later
      sglog().setLogLevels(SG_ALL, SG_WARN);
-     
-     m_subsystem_mgr = new SGSubsystemMgr;
 }
 
 /**
@@ -41,7 +39,6 @@ SGApplication::SGApplication(int argc, char **argv) :
  */
 SGApplication::~SGApplication()
 {
-     delete m_subsystem_mgr;
 }
 
 /**
