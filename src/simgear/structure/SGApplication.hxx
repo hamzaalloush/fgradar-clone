@@ -65,9 +65,9 @@ protected:
       */
      SGSubsystemMgr *m_subsystem_mgr;
 
-     virtual void init() {};
-     virtual void parseCmdArguments(int argc, char **argv) {};
-     virtual void createSubsystems() {};
+     virtual void init() {}
+     virtual void parseCmdArguments(int argc, char **argv) {}
+     virtual void createSubsystems() {}
 };
 
 #endif // __SGAPPLICATION_HXX
