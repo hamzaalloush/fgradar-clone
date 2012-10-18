@@ -1,0 +1,8 @@
+- cmake support  (Done)
+- main loop cleanup to prepare scripting support  (Done)
+- the CMAKE build system should probably be re-structured such that each source directory gets its own CMakeList?  (Done)
+- implement an SGSubsystem-based main loop  (Done)
+- absorb useful stuff (gtk/cairo bindings) from "Nasal standalone" into scripting module, and use SimGear's Nasal  (Done)
+- implement an SGApplication framework for SGSubsystem-based CLI/GUI apps  (Done)
+- start using the property-tree  (Done)
+- start using the SimGear-based logging facilities (SG_LOG)  (Done)
