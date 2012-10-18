@@ -26,7 +26,7 @@ public:
      /**
       * The constructor calls all the initialization functions. The derived
       * class just has to worry about implementing all the virtual functions it
-      * needs so they get called once they are called.
+      * needs so they are called from here.
       *
       * Don't forget to call this constructor from the derived class by doing:
       *
@@ -45,10 +45,9 @@ public:
      /**
       * \brief Runs the main application loop.
       *
-      * This pure virtual function isn't called internally by
-      * SGApplication. Instead, it is needed that it gets called outside the
-      * class. Since it is a pure virtual function, it is required that it is
-      * implemented on the derived class.
+      * This function isn't called internally by SGApplication. Instead, it is
+      * needed that it is called outside the class. Since this is a pure virtual
+      * function, the derived class needs to implement it.
       */
      virtual void run() = 0;
 
