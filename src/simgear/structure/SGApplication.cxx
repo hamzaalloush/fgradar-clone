@@ -32,6 +32,10 @@ SGApplication::SGApplication(int argc, char **argv) :
      // Initializing the log should be the first thing we do, so other
      // subsystems can use it later
      sglog().setLogLevels(SG_ALL, SG_WARN);
+
+     addCmdOption(std::string("--version"), onVersion);
+
+     parseCmdOptions(argc, argv);
 }
 
 /**
@@ -68,4 +72,33 @@ SGApplication::quit()
 {
      SG_LOG(SG_GENERAL, SG_INFO, "SGApplication quit signal");
      m_quit_flag = true;
+}
+
+void
+SGApplication::parseCmdOptions(int argc, char **argv)
+{
+     for (int i = 1; i < argc; i++) {
+          for(std::vector<CmdOption>::iterator j = m_cmd_options.begin();
+              j != m_cmd_options.end(); j++) {
+               if ((*j).cmd_name.compare(argv[i]) == 0)
+                    (*j).function();
+          }
+     }
+}
+
+void
+SGApplication::addCmdOption(std::string name, void (*func)())
+{
+     CmdOption option;
+     option.cmd_name = name;
+     option.function = func;
+
+     m_cmd_options.push_back(option);
+}
+
+void
+onVersion()
+{
+     std::cout << "I don't know!" << std::endl;
+     exit(0);
 }

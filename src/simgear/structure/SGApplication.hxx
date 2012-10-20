@@ -18,9 +18,14 @@
 #ifndef __SGAPPLICATION_HXX
 #define __SGAPPLICATION_HXX
 
-#include <simgear/structure/SGSharedPtr.hxx>
 #include <simgear/props/props.hxx>
+#include <simgear/structure/SGSharedPtr.hxx>
 #include <simgear/structure/subsystem_mgr.hxx>
+
+struct CmdOption {
+     std::string cmd_name;
+     void (*function)();
+};
 
 /**
  * \brief Defines a base application class.
@@ -107,7 +112,7 @@ protected:
       * Application will quit when this flag is true. It is recommended to use
       * the function quit() in order to quit the application.
       */
-     bool                   m_quit_flag;
+     bool                               m_quit_flag;
 
      /**
       * The subsystem manager. Controls the life cycle of every subsystem,
@@ -135,6 +140,15 @@ protected:
       * all memory allocation.
       */
      virtual void init() {}
+
+     void parseCmdOptions(int argc, char **argv);
+
+     void addCmdOption(std::string name, void (*func)());
+
+     std::vector<CmdOption> m_cmd_options;
+
 };
+
+void onVersion();
 
 #endif // __SGAPPLICATION_HXX
