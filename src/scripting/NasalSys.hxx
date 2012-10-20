@@ -8,11 +8,15 @@
 #include <simgear/scene/model/modellib.hxx>
 #include <simgear/xml/easyxml.hxx>
 #include <simgear/threads/SGQueue.hxx>
+#include <simgear/structure/event_mgr.hxx>
 
 #include <map>
 
+#include "../main/fgradar_app.hxx"
+
 extern naRef naInit_sgsocket(naContext);
 
+class FGNasalSys;
 class FGNasalScript;
 class FGNasalListener;
 class SGCondition;
@@ -20,10 +24,20 @@ class SGCondition;
 SGPropertyNode* ghostToPropNode(naRef ref);
 SGCondition* conditionGhost(naRef r);
 
+// "meta" subsystem group for Nasal and its dependencies, namely the Events subsystem (for timers)
+class FGNasal : public SGSubsystemGroup {
+public:
+  FGNasal();
+ ~FGNasal();
+protected:
+private:
+ 
+};
+
 class FGNasalSys : public SGSubsystem
 {
 public:
-    FGNasalSys();
+    FGNasalSys(SGEventMgr*);
     virtual ~FGNasalSys();
     virtual void init();
     virtual void update(double dt);
@@ -143,6 +157,7 @@ private:
     int _nextGCKey;
     naRef _gcHash;
     int _callCount;
+    SGEventMgr* _events;
 
     public: void handleTimer(NasalTimer* t);
 };

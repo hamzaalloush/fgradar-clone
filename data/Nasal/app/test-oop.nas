@@ -208,6 +208,7 @@ tmr = func(data) {
 tmrtag = gtk.timeout_add(500,tmr,"XXX");
 
 var main_loop = func(id) {
+  # print("Running scripted main loop");
   (id==loopid) or print("gtk main loop cancelled!") and return;
   gtk.main_iteration_do(0);
   settimer( func main_loop(id), 0);

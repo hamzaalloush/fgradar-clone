@@ -54,8 +54,8 @@ namespace fgradar {
      {
           /*m_subsystem_mgr->add("fgms-traffic", new FGMultiplayerTraffic,
             SGSubsystemMgr::GENERAL, 1.5);*/
-          m_subsystem_mgr->add("nasal", new FGNasalSys,
-                               SGSubsystemMgr::GENERAL, 0.5);
+          m_subsystem_mgr->add("nasal", new FGNasal,
+                               SGSubsystemMgr::GENERAL, 0);
      }
 
 } // namespace fgradar

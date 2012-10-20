@@ -28,6 +28,21 @@ using std::map;
 
 static FGNasalSys* nasalSys = 0;
 
+FGNasal::FGNasal()
+{
+   SGEventMgr * event = new SGEventMgr(); //FIXME: use smart ptr
+   event->init();
+   event->setRealtimeProperty( fgradar::fgradar_app->getNode("/sim/time/delta-realtime-sec", true) );
+   set_subsystem("nasal-timers", event, 0);
+   set_subsystem("nasal-vm", new FGNasalSys(event), 0);
+}
+
+FGNasal::~FGNasal() {
+//FIXME: pointers in ctor leak currently, use SGSharedPtr<> !
+}
+
+
+
 // Read and return file contents in a single buffer.  Note use of
 // stat() to get the file size.  This is a win32 function, believe it
 // or not. :) Note the REALLY IMPORTANT use of the "b" flag to fopen.
@@ -56,7 +71,7 @@ static char* readfile(const char* file, int* lenOut)
     return buf;
 }
 
-FGNasalSys::FGNasalSys()
+FGNasalSys::FGNasalSys(SGEventMgr* events) 
 {
     nasalSys = this;
     _context = 0;
@@ -64,6 +79,7 @@ FGNasalSys::FGNasalSys()
     _gcHash = naNil();
     _nextGCKey = 0; // Any value will do
     _callCount = 0;
+    _events=events;
 }
 
 // Utility.  Sets a named key in a hash by C string, rather than nasal
@@ -517,6 +533,12 @@ void FGNasalSys::init()
     loadScriptDirectory(nasalLibDir);
     std::cout << "Nasal lib directory loaded" << std::endl;
 
+    // Now load the various source files in the Nasal lib directory
+    simgear::Dir nasalTestDir(SGPath(root, "Nasal/tests"));
+    loadScriptDirectory(nasalTestDir);
+    std::cout << "Nasal unit test directory loaded" << std::endl;
+
+
     // Now load the various source files in the Nasal app directory
     simgear::Dir nasalAppDir(SGPath(root, "Nasal/app"));
     loadScriptDirectory(nasalAppDir);
@@ -753,10 +775,8 @@ void FGNasalSys::setTimer(naContext c, int argc, naRef* args)
     t->handler = handler;
     t->gcKey = gcSave(handler);
     t->nasal = this;
-/*
-    SGEventMgr* e = (SGEventMgr*) (INSTANCE->get_subsystem("event-mgr"));
-    e->addEvent("NasalTimer", t, &NasalTimer::timerExpired, delta.num, simtime);
-*/
+    if(!_events) throw("Events subsystem for Nasal timers NOT available!");
+    _events->addEvent("NasalTimer", t, &NasalTimer::timerExpired, delta.num, simtime);
 }
 
 void FGNasalSys::handleTimer(NasalTimer* t)
