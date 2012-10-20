@@ -24,7 +24,7 @@
 
 struct CmdOption {
      std::string cmd_name;
-     void (*function)();
+     bool (*function)();
 };
 
 /**
@@ -143,12 +143,12 @@ protected:
 
      void parseCmdOptions(int argc, char **argv);
 
-     void addCmdOption(std::string name, void (*func)());
+     void addCmdOption(std::string name, bool (*func)());
 
      std::vector<CmdOption> m_cmd_options;
 
 };
 
-void onVersion();
+bool onVersion();
 
 #endif // __SGAPPLICATION_HXX

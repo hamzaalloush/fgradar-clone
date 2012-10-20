@@ -80,14 +80,19 @@ SGApplication::parseCmdOptions(int argc, char **argv)
      for (int i = 1; i < argc; i++) {
           for(std::vector<CmdOption>::iterator j = m_cmd_options.begin();
               j != m_cmd_options.end(); j++) {
-               if ((*j).cmd_name.compare(argv[i]) == 0)
-                    (*j).function();
+               
+               if ((*j).cmd_name.compare(argv[i]) == 0) {
+                    if (!(*j).function())
+                         exit(0);
+                    else
+                         break;
+               }
           }
      }
 }
 
 void
-SGApplication::addCmdOption(std::string name, void (*func)())
+SGApplication::addCmdOption(std::string name, bool (*func)())
 {
      CmdOption option;
      option.cmd_name = name;
@@ -96,9 +101,10 @@ SGApplication::addCmdOption(std::string name, void (*func)())
      m_cmd_options.push_back(option);
 }
 
-void
+bool
 onVersion()
 {
      std::cout << "I don't know!" << std::endl;
-     exit(0);
+
+     return false;
 }
