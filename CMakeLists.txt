@@ -28,6 +28,7 @@ include(cpack_config)
 
 message(STATUS "Checking for libraries... ")
 
+# Check for SimGear...
 set (SIMGEAR_VERSION 2.9.0)
 find_package(SimGear ${SIMGEAR_VERSION} REQUIRED)
 
@@ -37,6 +38,18 @@ include_directories(${SIMGEAR_INCLUDE_DIR})
 set(LIBS ${LIBS}
   ${SIMGEAR_CORE_LIBRARIES}
   ${SIMGEAR_CORE_LIBRARY_DEPENDENCIES})
+
+# Check for GTK...
+
+find_package(GTK2 2.6 REQUIRED gtk)
+
+if (GTK2_FOUND)
+  include_directories(${GTK2_INCLUDE_DIRS})
+  set(LIBS ${LIBS} ${GTK2_LIBRARIES})
+  set(HAVE_GTK TRUE)
+else()
+  set(HAVE_GTK FALSE)
+endif()
 
 if(UNIX)
   add_definitions(-Wall)
