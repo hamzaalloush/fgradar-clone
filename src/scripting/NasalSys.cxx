@@ -369,7 +369,6 @@ static naRef f_abort(naContext c, naRef me, int argc, naRef* args)
     abort();
     return naNil();
 }
-#if 0
 // Return an array listing of all files in a directory
 static naRef f_directory(naContext c, naRef me, int argc, naRef* args)
 {
@@ -397,49 +396,10 @@ static naRef f_resolveDataPath(naContext c, naRef me, int argc, naRef* args)
     if(argc != 1 || !naIsString(args[0]))
         naRuntimeError(c, "bad arguments to resolveDataPath()");
 
-    SGPath p = globals->resolve_maybe_aircraft_path(naStr_data(args[0]));
+    SGPath p (SGApplication::ROOTDIR, naStr_data(args[0]));
     const char* pdata = p.c_str();
     return naStr_fromdata(naNewString(c), const_cast<char*>(pdata), strlen(pdata));
 }
-
-// Parse XML file.
-//     parsexml(<path> [, <start-tag> [, <end-tag> [, <data> [, <pi>]]]]);
-//
-// <path>      ... absolute path to an XML file
-// <start-tag> ... callback function with two args: tag name, attribute hash
-// <end-tag>   ... callback function with one arg:  tag name
-// <data>      ... callback function with one arg:  data
-// <pi>        ... callback function with two args: target, data
-//                 (pi = "processing instruction")
-// All four callback functions are optional and default to nil.
-// The function returns nil on error, or the validated file name otherwise.
-static naRef f_parsexml(naContext c, naRef me, int argc, naRef* args)
-{
-    if(argc < 1 || !naIsString(args[0]))
-        naRuntimeError(c, "parsexml(): path argument missing or not a string");
-    if(argc > 5) argc = 5;
-    for(int i=1; i<argc; i++)
-        if(!(naIsNil(args[i]) || naIsFunc(args[i])))
-            naRuntimeError(c, "parsexml(): callback argument not a function");
-
-    const char* file = fgValidatePath(naStr_data(args[0]), false);
-    if(!file) {
-        naRuntimeError(c, "parsexml(): reading '%s' denied "
-                "(unauthorized access)", naStr_data(args[0]));
-        return naNil();
-    }
-    std::ifstream input(file);
-    NasalXMLVisitor visitor(c, argc, args);
-    try {
-        readXML(input, visitor);
-    } catch (const sg_exception& e) {
-        naRuntimeError(c, "parsexml(): file '%s' %s",
-                file, e.getFormattedMessage().c_str());
-        return naNil();
-    }
-    return naStr_fromdata(naNewString(c), const_cast<char*>(file), strlen(file));
-}
-#endif
 
 // Return UNIX epoch time in seconds.
 static naRef f_systime(naContext c, naRef me, int argc, naRef* args)
@@ -470,11 +430,9 @@ static struct { const char* name; naCFunction func; } funcs[] = {
     { "rand",  f_rand },
     { "srand",  f_srand },
     { "abort", f_abort },
-#if 0
     { "directory", f_directory },
     { "resolvepath", f_resolveDataPath },
-    { "parsexml", f_parsexml },
-#endif
+//    { "parsexml", f_parsexml },
     { "systime", f_systime },
     { 0, 0 }
 };
