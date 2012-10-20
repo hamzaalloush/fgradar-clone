@@ -58,7 +58,7 @@ public:
       * \param argc Number of arguments from main().
       * \param argv Arguments from main().
       */
-     SGApplication(int argc, char **argv, bool datadir_required=true);
+     SGApplication(int argc, char **argv, const char*, bool datadir_required=true);
 
      virtual ~SGApplication();
 
@@ -116,7 +116,9 @@ public:
 
      static std::string ROOTDIR;
 protected:
-
+     std::string m_datafolder_param;
+     std::string m_appname;
+     std::string m_version_filename;
      /**
       * Application will quit when this flag is true. It is recommended to use
       * the function quit() in order to quit the application.

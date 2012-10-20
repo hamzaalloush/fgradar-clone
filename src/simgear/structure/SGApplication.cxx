@@ -27,15 +27,18 @@ SGSharedPtr<SGPropertyNode> SGApplication::m_property_tree = new SGPropertyNode;
  * Allocate memory and initialize variables. argc and argv are given so the user
  * can use them or not, but it is not compulsory.
  */
-SGApplication::SGApplication(int argc, char **argv, bool datadir_required):
+SGApplication::SGApplication(int argc, char **argv, const char* appname, bool datadir_required):
      m_quit_flag(false),
-     m_subsystem_mgr(new SGSubsystemMgr)
+     m_subsystem_mgr(new SGSubsystemMgr),
+     m_datafolder_param("data"),
+     m_appname(appname),
+     m_version_filename("version")
 {
      // Initializing the log should be the first thing we do, so other
      // subsystems can use it later
      sglog().setLogLevels(SG_ALL, SG_WARN);
 
-     addCmdOption(std::string("--data"), &SGApplication::onData);
+     addCmdOption(std::string("--"+ m_datafolder_param), &SGApplication::onData);
      //addCmdOption(std::string("--help"), onHelp);
      addCmdOption(std::string("--version"), &SGApplication::onVersion);
 
@@ -83,10 +86,10 @@ SGApplication::quit()
 bool
 SGApplication::checkVersion() {
   SGPath BaseCheck(SGApplication::ROOTDIR);
-  BaseCheck.append("version");
+  BaseCheck.append(m_version_filename);
   if (!BaseCheck.exists())
   {
-      std::cerr << "Missing base package. Use --data=path_to_fgradar_data" << std::endl;
+      std::cerr << m_appname << ":Missing base package. Use --"<< m_datafolder_param <<"=path_to_fgradar_data" << std::endl;
       throw ("data directory missin");
   }
   return true;
