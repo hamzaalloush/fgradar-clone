@@ -1,5 +1,3 @@
-sgsocket.dummy();
-
 monofont = "mono 12";
 
 var loopid = 1000;
