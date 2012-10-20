@@ -1,3 +1,8 @@
+###
+# This file contains a bunch of self tests (aka "unit tests") to ensure that our commits
+# don't break any existing features
+#
+
 var path = "/foo/bar/value";
 var value = 1000;
 
@@ -17,6 +22,7 @@ setlistener(listener_test, func {
 
 setprop(listener_test, 1);
 if (!listeners_work) die("Listeners are broken now!");
+
 
 var timers_work = 0;
 var timer_test = "/test/systime";
