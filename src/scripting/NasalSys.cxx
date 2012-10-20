@@ -22,6 +22,7 @@
 #include <simgear/structure/event_mgr.hxx>
 
 #include "NasalSys.hxx"
+#include "main/fgradar_app.hxx"
 
 using std::map;
 
@@ -156,20 +157,19 @@ FGNasalScript* FGNasalSys::parseScript(const char* src, const char* name)
 // elements.
 static SGPropertyNode* findnode(naContext c, naRef* vec, int len)
 {
-     /*
-    SGPropertyNode* p = ApplicationProperties::Properties;
+    SGPropertyNode* p = NULL;
     try {
         for(int i=0; i<len; i++) {
             naRef a = vec[i];
             if(!naIsString(a)) return 0;
-            p = p->getNode(naStr_data(a));
+            p = fgradar::fgradar_app->getNode(naStr_data(a), true);
             if(p == 0) return 0;
         }
     } catch (const string& err) {
         naRuntimeError(c, (char *)err.c_str());
         return 0;
     }
-     */
+    
     return NULL;
 }
 
@@ -215,7 +215,6 @@ static naRef f_getprop(naContext c, naRef me, int argc, naRef* args)
 // final argument.
 static naRef f_setprop(naContext c, naRef me, int argc, naRef* args)
 {
-     /*
 #define BUFLEN 1024
     char buf[BUFLEN + 1];
     buf[BUFLEN] = 0;
@@ -234,7 +233,7 @@ static naRef f_setprop(naContext c, naRef me, int argc, naRef* args)
         }
     }
 
-    SGPropertyNode* props = ApplicationProperties::Properties;
+    SGPropertyNode *props = fgradar::fgradar_app->getPropertyTree();
     naRef val = args[argc-1];
     bool result = false;
     try {
@@ -255,8 +254,6 @@ static naRef f_setprop(naContext c, naRef me, int argc, naRef* args)
     }
     return naNum(result);
 #undef BUFLEN
-     */
-     return naNil();
 }
 
 // print() extension function.  Concatenates and prints its arguments
@@ -513,8 +510,8 @@ void FGNasalSys::init()
     // begin garbage-collected).
     _gcHash = naNewHash(_context);
     hashset(_globals, "__gcsave", _gcHash);
-/*
-    SGPath root(ApplicationProperties::root);
+
+    SGPath root(std::string("../data"));
     // Now load the various source files in the Nasal lib directory
     simgear::Dir nasalLibDir(SGPath(root, "Nasal/lib"));
     loadScriptDirectory(nasalLibDir);
@@ -524,7 +521,6 @@ void FGNasalSys::init()
     simgear::Dir nasalAppDir(SGPath(root, "Nasal/app"));
     loadScriptDirectory(nasalAppDir);
     std::cout << "Nasal app directory loaded" << std::endl;
-*/
 
 #if 0
     // set signal and remove node to avoid restoring at reinit
@@ -801,10 +797,9 @@ int FGNasalSys::_listenerId = 0;
 // function.
 naRef FGNasalSys::setListener(naContext c, int argc, naRef* args)
 {
-     /*
     SGPropertyNode_ptr node;
     naRef prop = argc > 0 ? args[0] : naNil();
-    if(naIsString(prop)) node = ApplicationProperties::Properties->getNode(naStr_data(prop), true);
+    if(naIsString(prop)) node = fgradar::fgradar_app->getNode(naStr_data(prop), true);
     else if(naIsGhost(prop)) node = *(SGPropertyNode_ptr*)naGhost_ptr(prop);
     else {
         naRuntimeError(c, "setlistener() with invalid property argument");
@@ -830,8 +825,6 @@ naRef FGNasalSys::setListener(naContext c, int argc, naRef* args)
 
     _listener[_listenerId] = nl;
     return naNum(_listenerId++);
-     */
-     return naNil();
 }
 
 // removelistener(int) extension function. The argument is the id of
