@@ -25,6 +25,7 @@
 
 #include "fgradar_app.hxx"
 
+#include "multiplayer/traffic.hxx"
 #include "scripting/NasalSys.hxx"
 
 namespace fgradar {
@@ -52,6 +53,8 @@ namespace fgradar {
 
      void FgradarApp::createSubsystems()
      {
+          m_subsystem_mgr->add("fgms-traffic", new FGMultiplayerTraffic,
+                               SGSubsystemMgr::GENERAL, 1.5);
           m_subsystem_mgr->add("nasal", new FGNasalSys,
                                SGSubsystemMgr::GENERAL, 0.5);
      }

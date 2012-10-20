@@ -54,7 +54,7 @@ SGApplication::run()
      while (!m_quit_flag) {
 
           // Update subsystems
-          m_subsystem_mgr->update(0);
+          m_subsystem_mgr->update(0.1);
      }
 }
 
