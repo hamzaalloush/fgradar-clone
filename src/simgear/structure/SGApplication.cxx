@@ -39,8 +39,9 @@ SGApplication::SGApplication(int argc, char **argv, const char* appname, bool da
      sglog().setLogLevels(SG_ALL, SG_WARN);
 
      addCmdOption(std::string("--"+ m_datafolder_param), &SGApplication::onData);
-     //addCmdOption(std::string("--help"), onHelp);
+     addCmdOption(std::string("--help"), &SGApplication::onHelp);
      addCmdOption(std::string("--version"), &SGApplication::onVersion);
+     addCmdOption(std::string("--prop"), &SGApplication::onProp);
 
      parseCmdOptions(argc, argv);
      if (datadir_required && SGApplication::ROOTDIR=="")
@@ -130,7 +131,7 @@ SGApplication::
 onData(std::string arg) {
  ROOTDIR=arg;
  simgear::ResourceManager::instance()->addBasePath( ROOTDIR );
- return true;
+ return true; // don't exit
 }
 
 bool
@@ -138,6 +139,22 @@ SGApplication::
 onVersion(std::string arg)
 {
      std::cout << "I don't know!" << std::endl;
-     return false;
+     return false; // exit
+}
+
+bool 
+SGApplication::
+onHelp(std::string arg) 
+{
+ std::cout << "Help ..." << std::endl;
+ return false; // exit
+}
+
+bool
+SGApplication::
+onProp(std::string arg) 
+{
+
+  return true; // don't exit 
 }
 

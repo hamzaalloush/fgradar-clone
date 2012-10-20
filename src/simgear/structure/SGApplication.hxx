@@ -154,6 +154,8 @@ protected:
 
      bool onData(std::string);
      bool onVersion(std::string);
+     bool onHelp(std::string);
+     bool onProp(std::string);
     
      void parseCmdOptions(int argc, char **argv);
 
