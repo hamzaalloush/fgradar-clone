@@ -170,7 +170,7 @@ static SGPropertyNode* findnode(naContext c, naRef* vec, int len)
         return 0;
     }
     
-    return NULL;
+    return p;
 }
 
 // getprop() extension function.  Concatenates its string arguments as
@@ -233,11 +233,11 @@ static naRef f_setprop(naContext c, naRef me, int argc, naRef* args)
         }
     }
 
-    SGPropertyNode *props = fgradar::fgradar_app->getPropertyTree();
+    SGPropertyNode *prop = fgradar::fgradar_app->getNode(buf, true);
     naRef val = args[argc-1];
     bool result = false;
     try {
-        if(naIsString(val)) result = props->setStringValue(buf, naStr_data(val));
+        if(naIsString(val)) result = prop->setStringValue(naStr_data(val));
         else {
             naRef n = naNumValue(val);
             if(naIsNil(n))
@@ -246,8 +246,8 @@ static naRef f_setprop(naContext c, naRef me, int argc, naRef* args)
             if (osg::isNaN(n.num)) {
                 naRuntimeError(c, "setprop() passed a NaN");
             }
-            
-            result = props->setDoubleValue(buf, n.num);
+
+            result = prop->setDoubleValue(n.num);
         }
     } catch (const string& err) {
         naRuntimeError(c, (char *)err.c_str());

@@ -40,7 +40,6 @@ namespace fgradar {
 
      FgradarApp::~FgradarApp()
      {
-
      }
 
      void
