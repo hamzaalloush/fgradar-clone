@@ -11,7 +11,7 @@
 
 #include <map>
 
-#include "../ApplicationProperties.hxx" 
+extern naRef naInit_sgsocket(naContext);
 
 class FGNasalScript;
 class FGNasalListener;

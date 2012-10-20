@@ -23,8 +23,6 @@
 
 #include "NasalSys.hxx"
 
-#include "../main.hxx" //FIXME: use FGRadarApp to get a handle to the event mgr
-
 using std::map;
 
 static FGNasalSys* nasalSys = 0;
@@ -158,7 +156,7 @@ FGNasalScript* FGNasalSys::parseScript(const char* src, const char* name)
 // elements.
 static SGPropertyNode* findnode(naContext c, naRef* vec, int len)
 {
-    
+     /*
     SGPropertyNode* p = ApplicationProperties::Properties;
     try {
         for(int i=0; i<len; i++) {
@@ -171,7 +169,8 @@ static SGPropertyNode* findnode(naContext c, naRef* vec, int len)
         naRuntimeError(c, (char *)err.c_str());
         return 0;
     }
-    return p;
+     */
+    return NULL;
 }
 
 // getprop() extension function.  Concatenates its string arguments as
@@ -216,6 +215,7 @@ static naRef f_getprop(naContext c, naRef me, int argc, naRef* args)
 // final argument.
 static naRef f_setprop(naContext c, naRef me, int argc, naRef* args)
 {
+     /*
 #define BUFLEN 1024
     char buf[BUFLEN + 1];
     buf[BUFLEN] = 0;
@@ -255,6 +255,8 @@ static naRef f_setprop(naContext c, naRef me, int argc, naRef* args)
     }
     return naNum(result);
 #undef BUFLEN
+     */
+     return naNil();
 }
 
 // print() extension function.  Concatenates and prints its arguments
@@ -493,6 +495,7 @@ void FGNasalSys::init()
     naAddSym(_context, _globals, "_gtk", naInit_gtk(_context));
     naAddSym(_context, _globals, "cairo", naInit_cairo(_context));
     naAddSym(_context, _globals, "unix", naInit_unix(_context));
+    naAddSym(_context, _globals, "sgsocket", naInit_sgsocket(_context));
 
 
 
@@ -510,17 +513,18 @@ void FGNasalSys::init()
     // begin garbage-collected).
     _gcHash = naNewHash(_context);
     hashset(_globals, "__gcsave", _gcHash);
-
-    // Now load the various source files in the Nasal lib directory TODO: the path should be based on fg-root and not just ../data!
-    simgear::Dir nasalLibDir(SGPath(SGPath("../data"), "Nasal/lib"));
+/*
+    SGPath root(ApplicationProperties::root);
+    // Now load the various source files in the Nasal lib directory
+    simgear::Dir nasalLibDir(SGPath(root, "Nasal/lib"));
     loadScriptDirectory(nasalLibDir);
     std::cout << "Nasal lib directory loaded" << std::endl;
 
- // Now load the various source files in the Nasal app directory TODO: the path should be based on fg-root and not just ../data!
-    simgear::Dir nasalAppDir(SGPath(SGPath("../data"), "Nasal/app"));
+    // Now load the various source files in the Nasal app directory
+    simgear::Dir nasalAppDir(SGPath(root, "Nasal/app"));
     loadScriptDirectory(nasalAppDir);
     std::cout << "Nasal app directory loaded" << std::endl;
-
+*/
 
 #if 0
     // set signal and remove node to avoid restoring at reinit
@@ -753,9 +757,10 @@ void FGNasalSys::setTimer(naContext c, int argc, naRef* args)
     t->handler = handler;
     t->gcKey = gcSave(handler);
     t->nasal = this;
-
+/*
     SGEventMgr* e = (SGEventMgr*) (INSTANCE->get_subsystem("event-mgr"));
     e->addEvent("NasalTimer", t, &NasalTimer::timerExpired, delta.num, simtime);
+*/
 }
 
 void FGNasalSys::handleTimer(NasalTimer* t)
@@ -796,6 +801,7 @@ int FGNasalSys::_listenerId = 0;
 // function.
 naRef FGNasalSys::setListener(naContext c, int argc, naRef* args)
 {
+     /*
     SGPropertyNode_ptr node;
     naRef prop = argc > 0 ? args[0] : naNil();
     if(naIsString(prop)) node = ApplicationProperties::Properties->getNode(naStr_data(prop), true);
@@ -824,6 +830,8 @@ naRef FGNasalSys::setListener(naContext c, int argc, naRef* args)
 
     _listener[_listenerId] = nl;
     return naNum(_listenerId++);
+     */
+     return naNil();
 }
 
 // removelistener(int) extension function. The argument is the id of
