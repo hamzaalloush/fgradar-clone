@@ -22,7 +22,8 @@
 #include <simgear/structure/event_mgr.hxx>
 
 #include "NasalSys.hxx"
-#include "main/fgradar_app.hxx"
+#include "main/fgradar_app.hxx" //FIXME should only include SGApplication.hxx here
+#include "simgear/structure/SGApplication.hxx"
 
 using std::map;
 
@@ -527,17 +528,25 @@ void FGNasalSys::init()
     _gcHash = naNewHash(_context);
     hashset(_globals, "__gcsave", _gcHash);
 
-    SGPath root(std::string("../data"));
+    std::string root( SGApplication::ROOTDIR ); 
+    // SG_LOG(SG_GENERAL, SG_ALERT, "ROOTDIR is:" << SGApplication::ROOTDIR);
+    try {
     // Now load the various source files in the Nasal lib directory
     simgear::Dir nasalLibDir(SGPath(root, "Nasal/lib"));
     loadScriptDirectory(nasalLibDir);
+    } catch (...) {
+    }
     std::cout << "Nasal lib directory loaded" << std::endl;
 
-    // Now load the various source files in the Nasal lib directory
+    try {
+    // Now load the various source files in the Nasal test directory (scripted unit test)
     simgear::Dir nasalTestDir(SGPath(root, "Nasal/tests"));
     loadScriptDirectory(nasalTestDir);
+    } catch (...) {
+    }
     std::cout << "Nasal unit test directory loaded" << std::endl;
 
+    //TODO: load submodules here
 
     // Now load the various source files in the Nasal app directory
     simgear::Dir nasalAppDir(SGPath(root, "Nasal/app"));

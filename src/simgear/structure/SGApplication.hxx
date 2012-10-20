@@ -18,14 +18,12 @@
 #ifndef __SGAPPLICATION_HXX
 #define __SGAPPLICATION_HXX
 
+#include <string>
+
+#include <simgear/misc/sg_path.hxx>
 #include <simgear/props/props.hxx>
 #include <simgear/structure/SGSharedPtr.hxx>
 #include <simgear/structure/subsystem_mgr.hxx>
-
-struct CmdOption {
-     std::string cmd_name;
-     bool (*function)();
-};
 
 /**
  * \brief Defines a base application class.
@@ -39,6 +37,11 @@ struct CmdOption {
  */
 class SGApplication {
 public:
+     typedef bool (SGApplication::*CmdCallback) (std::string);
+	struct CmdOption {
+     		std::string cmd_name;
+     		SGApplication::CmdCallback function;
+	};
 
      /**
       * This constructor performs all the initialization code (only memory
@@ -55,7 +58,7 @@ public:
       * \param argc Number of arguments from main().
       * \param argv Arguments from main().
       */
-     SGApplication(int argc, char **argv);
+     SGApplication(int argc, char **argv, bool datadir_required=true);
 
      virtual ~SGApplication();
 
@@ -103,11 +106,15 @@ public:
           return m_property_tree->getNode(path, create);
      }
 
+     bool checkVersion();
+
      SGSubsystemMgr *get_subsystem_mgr() {return m_subsystem_mgr;}
 
      SGSubsystem *get_subsystem(const char *name)
           {return m_subsystem_mgr->get_subsystem(name);}
 
+
+     static std::string ROOTDIR;
 protected:
 
      /**
@@ -143,14 +150,15 @@ protected:
       */
      virtual void init() {}
 
+     bool onData(std::string);
+     bool onVersion(std::string);
+    
      void parseCmdOptions(int argc, char **argv);
 
-     void addCmdOption(std::string name, bool (*func)());
+     void addCmdOption(std::string name, CmdCallback);
 
      std::vector<CmdOption> m_cmd_options;
 
 };
-
-bool onVersion();
 
 #endif // __SGAPPLICATION_HXX

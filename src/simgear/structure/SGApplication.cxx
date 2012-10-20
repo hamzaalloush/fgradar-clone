@@ -16,16 +16,18 @@
  */
 
 #include <simgear/debug/logstream.hxx>
+#include <simgear/misc/ResourceManager.hxx>
 
 #include "SGApplication.hxx"
 
+std::string SGApplication::ROOTDIR(".");
 SGSharedPtr<SGPropertyNode> SGApplication::m_property_tree = new SGPropertyNode;
 
 /**
  * Allocate memory and initialize variables. argc and argv are given so the user
  * can use them or not, but it is not compulsory.
  */
-SGApplication::SGApplication(int argc, char **argv) :
+SGApplication::SGApplication(int argc, char **argv, bool datadir_required):
      m_quit_flag(false),
      m_subsystem_mgr(new SGSubsystemMgr)
 {
@@ -33,9 +35,13 @@ SGApplication::SGApplication(int argc, char **argv) :
      // subsystems can use it later
      sglog().setLogLevels(SG_ALL, SG_WARN);
 
-     addCmdOption(std::string("--version"), onVersion);
+     addCmdOption(std::string("--data"), &SGApplication::onData);
+     //addCmdOption(std::string("--help"), onHelp);
+     addCmdOption(std::string("--version"), &SGApplication::onVersion);
 
      parseCmdOptions(argc, argv);
+     if (datadir_required && SGApplication::ROOTDIR=="")
+	throw("Data directory required");
 }
 
 /**
@@ -74,25 +80,40 @@ SGApplication::quit()
      m_quit_flag = true;
 }
 
+bool
+SGApplication::checkVersion() {
+  SGPath BaseCheck(SGApplication::ROOTDIR);
+  BaseCheck.append("version");
+  if (!BaseCheck.exists())
+  {
+      std::cerr << "Missing base package. Use --data=path_to_fgradar_data" << std::endl;
+      throw ("data directory missin");
+  }
+  return true;
+}
+
 void
 SGApplication::parseCmdOptions(int argc, char **argv)
 {
      for (int i = 1; i < argc; i++) {
           for(std::vector<CmdOption>::iterator j = m_cmd_options.begin();
               j != m_cmd_options.end(); j++) {
-               
-               if ((*j).cmd_name.compare(argv[i]) == 0) {
-                    if (!(*j).function())
-                         exit(0);
-                    else
-                         break;
+               std::string tok(argv[i]);
+	       std::string cmd( (*j).cmd_name );
+	
+               if (cmd.compare( tok.substr(0,cmd.size() ))  == 0) {
+		    std::string arg = tok.substr(tok.find("=")+1, tok.length());
+		    SGApplication::CmdCallback c = (*j).function;
+		    if(! (*this.*c) (arg) ) 
+			exit(0);
+		    else break;
                }
           }
      }
 }
 
 void
-SGApplication::addCmdOption(std::string name, bool (*func)())
+SGApplication::addCmdOption(std::string name, CmdCallback func)
 {
      CmdOption option;
      option.cmd_name = name;
@@ -102,9 +123,18 @@ SGApplication::addCmdOption(std::string name, bool (*func)())
 }
 
 bool
-onVersion()
+SGApplication::
+onData(std::string arg) {
+ ROOTDIR=arg;
+ simgear::ResourceManager::instance()->addBasePath( ROOTDIR );
+ return true;
+}
+
+bool
+SGApplication::
+onVersion(std::string arg)
 {
      std::cout << "I don't know!" << std::endl;
-
      return false;
 }
+
