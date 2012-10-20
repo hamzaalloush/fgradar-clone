@@ -17,7 +17,8 @@ foreach(MODULE
     # so that this can be removed then!
     simgear
 
-    scripting)
+    scripting
+    multiplayer)
   target_link_libraries(${PACKAGE_LOWER} ${MODULE})
 endforeach()
 

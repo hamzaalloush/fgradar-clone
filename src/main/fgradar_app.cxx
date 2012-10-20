@@ -25,6 +25,8 @@
 
 #include "fgradar_app.hxx"
 
+#include "scripting/NasalSys.hxx"
+
 namespace fgradar {
 
      FgradarApp *fgradar_app = NULL;
@@ -50,7 +52,8 @@ namespace fgradar {
 
      void FgradarApp::createSubsystems()
      {
-
+          m_subsystem_mgr->add("nasal", new FGNasalSys,
+                               SGSubsystemMgr::GENERAL, 0.5);
      }
 
 } // namespace fgradar

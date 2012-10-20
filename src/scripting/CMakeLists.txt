@@ -4,6 +4,7 @@ set(SOURCES
   iolib.c
   nasal-props.cxx
   NasalSys.cxx
+  sgsocketlib.cxx
   unixlib.c
 )
 
