@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <simgear/debug/logstream.hxx>
 #include <simgear/misc/ResourceManager.hxx>
 
@@ -27,7 +28,8 @@ SGSharedPtr<SGPropertyNode> SGApplication::m_property_tree = new SGPropertyNode;
  * Allocate memory and initialize variables. argc and argv are given so the user
  * can use them or not, but it is not compulsory.
  */
-SGApplication::SGApplication(int argc, char **argv, const char* appname, bool datadir_required):
+SGApplication::SGApplication(int argc, char **argv, const char* appname,
+                             bool datadir_required):
      m_quit_flag(false),
      m_subsystem_mgr(new SGSubsystemMgr),
      m_datafolder_param("data"),
@@ -38,12 +40,22 @@ SGApplication::SGApplication(int argc, char **argv, const char* appname, bool da
      // subsystems can use it later
      sglog().setLogLevels(SG_ALL, SG_WARN);
 
-     addCmdOption(std::string("--"+ m_datafolder_param), &SGApplication::onData);
-     addCmdOption(std::string("--help"), &SGApplication::onHelp);
-     addCmdOption(std::string("--version"), &SGApplication::onVersion);
-     addCmdOption(std::string("--prop"), &SGApplication::onProp);
+     addCmdOption(std::string("--"+ m_datafolder_param), std::string("-d"),
+                  std::string("specify data directory location."),
+                  &SGApplication::onData);
+     
+     addCmdOption(std::string("--help"), std::string("-h"),
+                  std::string("shows the available command line options"),
+                  &SGApplication::onHelp);
+     
+     addCmdOption(std::string("--version"), std::string("-v"),
+                  std::string("shows version number."),
+                  &SGApplication::onVersion);
+     
+     //addCmdOption(std::string("--prop"), &SGApplication::onProp);
 
      parseCmdOptions(argc, argv);
+     
      if (datadir_required && SGApplication::ROOTDIR=="")
 	throw("Data directory required");
 }
@@ -90,7 +102,8 @@ SGApplication::checkVersion() {
   BaseCheck.append(m_version_filename);
   if (!BaseCheck.exists())
   {
-      std::cerr << m_appname << ":Missing base package. Use --"<< m_datafolder_param <<"=path_to_fgradar_data" << std::endl;
+      std::cerr << m_appname << ":Missing base package. Use --"
+                << m_datafolder_param <<"=path_to_fgradar_data" << std::endl;
       throw ("data directory missin");
   }
   return true;
@@ -103,7 +116,7 @@ SGApplication::parseCmdOptions(int argc, char **argv)
           for(std::vector<CmdOption>::iterator j = m_cmd_options.begin();
               j != m_cmd_options.end(); j++) {
                std::string tok(argv[i]);
-	       std::string cmd( (*j).cmd_name );
+	       std::string cmd( (*j).command );
 	
                if (cmd.compare( tok.substr(0,cmd.size() ))  == 0) {
 		    std::string arg = tok.substr(tok.find("=")+1, tok.length());
@@ -117,10 +130,13 @@ SGApplication::parseCmdOptions(int argc, char **argv)
 }
 
 void
-SGApplication::addCmdOption(std::string name, CmdCallback func)
+SGApplication::addCmdOption(std::string command, std::string alias,
+                            std::string description, CmdCallback func)
 {
      CmdOption option;
-     option.cmd_name = name;
+     option.command = command;
+     option.alias = alias;
+     option.description = description;
      option.function = func;
 
      m_cmd_options.push_back(option);
@@ -146,8 +162,29 @@ bool
 SGApplication::
 onHelp(std::string arg) 
 {
- std::cout << "Help ..." << std::endl;
- return false; // exit
+     std::string appname_lower = m_appname;
+     std::transform(appname_lower.begin(), appname_lower.end(),
+                    appname_lower.begin(), ::tolower);
+     
+     std::cout << "Usage: " << appname_lower << " [OPTIONS]" << std::endl
+               << std::endl;
+     
+     size_t longest_cmd_size = 0;
+     for (std::vector<CmdOption>::iterator i = m_cmd_options.begin();
+          i != m_cmd_options.end(); i++)
+          if ((*i).command.size() > longest_cmd_size)
+               longest_cmd_size = (*i).command.size();
+
+     std::cout << "Options: " << std::endl;
+     for (std::vector<CmdOption>::iterator i = m_cmd_options.begin();
+          i != m_cmd_options.end(); i++) {
+
+          std::cout << "  " << (*i).alias << ",  " << (*i).command
+                    << std::string(longest_cmd_size - (*i).command.size(), ' ')
+                    << "   " << (*i).description << std::endl;
+     }
+     
+     return false;
 }
 
 bool

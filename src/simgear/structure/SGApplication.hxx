@@ -38,10 +38,13 @@
 class SGApplication {
 public:
      typedef bool (SGApplication::*CmdCallback) (std::string);
-	struct CmdOption {
-     		std::string cmd_name;
-     		SGApplication::CmdCallback function;
-	};
+     
+     struct CmdOption {
+          std::string command;
+          std::string alias;
+          std::string description;
+          SGApplication::CmdCallback function;
+     };
 
      /**
       * This constructor performs all the initialization code (only memory
@@ -159,7 +162,8 @@ protected:
     
      void parseCmdOptions(int argc, char **argv);
 
-     void addCmdOption(std::string name, CmdCallback);
+     void addCmdOption(std::string command, std::string alias,
+                       std::string description, CmdCallback func);
 
      std::vector<CmdOption> m_cmd_options;
 
