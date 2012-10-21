@@ -91,8 +91,6 @@ public:
       */
      virtual void quit();
 
-     static SGPropertyNode *getPropertyTree() {return m_property_tree;}
-     
      /**
       * Get a property tree node. Once you have the node, you can access
       * its value by calling 'get<type>Value', where in type you specify
