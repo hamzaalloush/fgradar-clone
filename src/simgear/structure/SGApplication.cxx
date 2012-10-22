@@ -52,7 +52,9 @@ SGApplication::SGApplication(int argc, char **argv, const char* appname,
                   std::string("shows version number."),
                   &SGApplication::onVersion);
      
-     //addCmdOption(std::string("--prop"), &SGApplication::onProp);
+     addCmdOption(std::string("--prop"), std::string("-p"),
+                  std::string("set a value to a property tree node."),
+                  &SGApplication::onProp);
 
      parseCmdOptions(argc, argv);
      
@@ -188,10 +190,19 @@ onHelp(std::string arg)
 }
 
 bool
-SGApplication::
-onProp(std::string arg) 
+SGApplication::onProp(std::string arg) 
 {
+     // TODO: Add support for other types, currently it always takes the value
+     // as a string, when it can be a number (int, float, double) or a boolean.
+     
+     size_t colon_pos = arg.find(":");
 
-  return true; // don't exit 
+     std::string prop = arg.substr(0, colon_pos);
+     SGPropertyNode *node = getNode(prop.c_str(), true);
+
+     std::string value = arg.substr(colon_pos + 1, arg.size());
+     node->setStringValue(value);
+     
+     return true; // don't exit 
 }
 
