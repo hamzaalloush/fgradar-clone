@@ -105,7 +105,7 @@ SGApplication::checkVersion() {
   if (!BaseCheck.exists())
   {
       std::cerr << m_appname << ":Missing base package. Use --"
-                << m_datafolder_param <<"=path_to_fgradar_data" << std::endl;
+                << m_datafolder_param <<"=path_to_"<< m_appname <<"_data" << std::endl;
       throw ("data directory missin");
   }
   return true;
@@ -186,12 +186,13 @@ onHelp(std::string arg)
                     << "   " << (*i).description << std::endl;
      }
      
-     return false;
+     return false; // exit
 }
 
 bool
 SGApplication::onProp(std::string arg) 
 {
+     // FIXME: this can't work because of the hard-coded argument separator 
      // TODO: Add support for other types, currently it always takes the value
      // as a string, when it can be a number (int, float, double) or a boolean.
      
