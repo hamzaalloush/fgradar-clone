@@ -28,41 +28,31 @@ SGSharedPtr<SGPropertyNode> SGApplication::m_property_tree = new SGPropertyNode;
  * Allocate memory and initialize variables. argc and argv are given so the user
  * can use them or not, but it is not compulsory.
  */
-SGApplication::SGApplication(int argc, char **argv, const char* appname,
-                             bool datadir_required):
+SGApplication::SGApplication(int argc, char **argv, const char *appname,
+                             bool datadir_required) :
      m_quit_flag(false),
      m_subsystem_mgr(new SGSubsystemMgr),
      m_appname(appname)
 {
-     // Initializing the log should be the first thing we do, so other
+     // Initializing the log should be the first thing to do, so other
      // subsystems can use it later
      sglog().setLogLevels(SG_ALL, SG_WARN);
 
-     addCmdOption(std::string("--data"), std::string("-d"),
-                  std::string("specify data directory location."),
+     addCmdOption("--data", "-d", "specify data directory location.",
                   &SGApplication::onData);
-     
-     addCmdOption(std::string("--help"), std::string("-h"),
-                  std::string("shows the available command line options."),
+     addCmdOption("--help", "-h", "shows the available command line options.",
                   &SGApplication::onHelp);
-     
-     addCmdOption(std::string("--version"), std::string("-v"),
-                  std::string("shows version number."),
+     addCmdOption("--version", "-v", "shows version number.",
                   &SGApplication::onVersion);
-     
-     addCmdOption(std::string("--prop"), std::string("-p"),
-                  std::string("set a value to a property tree node."),
+     addCmdOption("--prop", "-p", "set a value to a property tree node.",
                   &SGApplication::onProp);
 
      parseCmdOptions(argc, argv);
      
-     if (datadir_required && SGApplication::ROOTDIR=="")
+     if (datadir_required && SGApplication::ROOTDIR.empty())
 	throw("Data directory required");
 }
 
-/**
- * Free previously allocated memory.
- */
 SGApplication::~SGApplication()
 {
 }
@@ -96,51 +86,74 @@ SGApplication::quit()
      m_quit_flag = true;
 }
 
+/**
+ * Check the existence of the version file. If it doesn't exist, it means the
+ * user has specified a wrong data directory and throws an exception.
+ */
 bool
-SGApplication::checkVersion() {
-  SGPath BaseCheck(SGApplication::ROOTDIR);
-  BaseCheck.append("version");
-  if (!BaseCheck.exists())
-  {
-      std::cerr << m_appname << ":Missing base package. Use --data"
-                <<"=path_to_"<< m_appname <<"_data" << std::endl;
-      throw ("data directory missin");
-  }
-  return true;
+SGApplication::checkVersion()
+{
+     SGPath BaseCheck(SGApplication::ROOTDIR);
+     BaseCheck.append("version");
+     
+     if (!BaseCheck.exists()) {
+          SG_LOG(SG_GENERAL, SG_ALERT, "Missing data directory in '"
+                 << SGApplication::ROOTDIR << "'.");
+          throw ("Missing data directory.");
+     }
+     
+     return true;
 }
 
+/**
+ * Parse all the command line options. Compares them with the command line
+ * options list. If one matches, execute its callback function and keep reading
+ * until there are no command line options left to read.
+ */
 void
 SGApplication::parseCmdOptions(int argc, char **argv)
 {
      for (int i = 1; i < argc; i++) {
           for(std::vector<CmdOption>::iterator j = m_cmd_options.begin();
               j != m_cmd_options.end(); j++) {
+               
                std::string tok(argv[i]);
-	       std::string cmd( (*j).command );
+	       std::string cmd((*j).command);
 	
-               if (cmd.compare( tok.substr(0,cmd.size() ))  == 0) {
-		    std::string arg = tok.substr(tok.find("=")+1, tok.length());
+               if (cmd.compare(tok.substr(0,cmd.size())) == 0) {
+		    std::string arg = tok.substr(tok.find("=") + 1, tok.length());
 		    SGApplication::CmdCallback c = (*j).function;
-		    if(! (*this.*c) (arg) ) 
-			exit(0);
+
+                    // Check the return value of the callback. If false, exit
+                    // program (useful for commands like --version or --help).
+		    if(!(*this.*c)(arg) ) 
+                         exit(0);
 		    else break;
                }
           }
      }
 }
 
+/**
+ * Add a new command line option. Creates a new CmdOption structure, fills it
+ * with the function parameters and appends it to the command line options list.
+ */
 void
 SGApplication::addCmdOption(std::string command, std::string alias,
                             std::string description, CmdCallback func)
 {
      CmdOption option;
-     option.command = command;
-     option.alias = alias;
+     option.command     = command;
+     option.alias       = alias;
      option.description = description;
-     option.function = func;
+     option.function    = func;
 
      m_cmd_options.push_back(option);
 }
+
+/*******************************************************************************/
+/********************************** CALLBACKS **********************************/
+/*******************************************************************************/
 
 bool
 SGApplication::

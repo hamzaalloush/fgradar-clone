@@ -37,8 +37,24 @@
  */
 class SGApplication {
 public:
+
+     /**
+      * \brief Defines the common command line callback.
+      *
+      * \param Extra content after the argument (everything after the '='). For
+      *        example, "--cmd=extra", where "extra" is the extra content.
+      * \return If we should exit the application after running the callback
+      *         (false exits the application).
+      */
      typedef bool (SGApplication::*CmdCallback) (std::string);
-     
+
+     /**
+      * \brief Defines a command line option.
+      *
+      * It has several attributes, like name, alias etc. and the callback
+      * function, that is, the function that gets executed when the option is
+      * issued.
+      */
      struct CmdOption {
           std::string command;
           std::string alias;
@@ -61,7 +77,8 @@ public:
       * \param argc Number of arguments from main().
       * \param argv Arguments from main().
       */
-     SGApplication(int argc, char **argv, const char*, bool datadir_required=true);
+     SGApplication(int argc, char **argv, const char *appname,
+                   bool datadir_required = true);
 
      virtual ~SGApplication();
 
@@ -107,6 +124,17 @@ public:
           return m_property_tree->getNode(path, create);
      }
 
+     /**
+      * \brief Check for the version file in the data directory.
+      *
+      * Can be useful to check if the user has specified a correct data
+      * directory location.
+      *
+      * This function is not called by default in SGApplication, you should call
+      * it from your inherited class if you want to use it.
+      *
+      * \return True when we could locate version.
+      */
      bool checkVersion();
 
      SGSubsystemMgr *get_subsystem_mgr() {return m_subsystem_mgr;}
@@ -124,14 +152,21 @@ protected:
       * Application will quit when this flag is true. It is recommended to use
       * the function quit() in order to quit the application.
       */
-     bool                               m_quit_flag;
+     bool                                m_quit_flag;
+
+     /**
+      * A list of known command line options (filled by the addCmdOption()
+      * method). This is used by the parseCmdOptions() method to check for
+      * defined command line options and execute their respective callback.
+      */
+     std::vector<CmdOption>              m_cmd_options;
 
      /**
       * The subsystem manager. Controls the life cycle of every subsystem,
       * manages addition and removal of subsystems and keeps them always
       * accessible.
       */
-     SGSharedPtr<SGSubsystemMgr>        m_subsystem_mgr;
+     SGSharedPtr<SGSubsystemMgr>         m_subsystem_mgr;
 
      /**
       * This is the property tree. It is just a node to the root of the
@@ -139,8 +174,9 @@ protected:
       * it static so there is only one property tree in the whole program,
       * even if by accident there are two subsystems.
       */
-     static SGSharedPtr<SGPropertyNode> m_property_tree;
+     static SGSharedPtr<SGPropertyNode>  m_property_tree;
 
+     
      /**
       * \brief Initialization code should be placed here.
       *
@@ -153,18 +189,41 @@ protected:
       */
      virtual void init() {}
 
+     /**
+      * \brief Parse command line options.
+      *
+      * With the previously filled command line options vector, this function
+      * compares the command line options given by the user with the ones in the
+      * vector.
+      *
+      * You shouldn't call this method in your inherited class since it is
+      * already called by default.
+      *
+      * \see addCmdOption for more information about adding command line
+      * options.
+      *
+      * \param argc Number of arguments.
+      * \param argv Contents of each argument.
+      */
+     void parseCmdOptions(int argc, char **argv);
+
+     /**
+      * \brief Adds a command line option to the list of known cmd options.
+      *
+      * \param command The command the user has to issue. (e.g. --example).
+      * \param alias Alias to the command (e.g. -e).
+      * \param description A brief description about what the command does.
+      * \param func Function call when the command gets issued.
+      */
+     void addCmdOption(std::string command, std::string alias,
+                       std::string description, CmdCallback func);
+
+private:
+     
      bool onData(std::string);
      bool onVersion(std::string);
      bool onHelp(std::string);
      bool onProp(std::string);
-    
-     void parseCmdOptions(int argc, char **argv);
-
-     void addCmdOption(std::string command, std::string alias,
-                       std::string description, CmdCallback func);
-
-     std::vector<CmdOption> m_cmd_options;
-
 };
 
 #endif // __SGAPPLICATION_HXX
