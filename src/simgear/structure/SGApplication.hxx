@@ -117,9 +117,9 @@ public:
 
      static std::string ROOTDIR;
 protected:
-     std::string m_datafolder_param;
+
      std::string m_appname;
-     std::string m_version_filename;
+
      /**
       * Application will quit when this flag is true. It is recommended to use
       * the function quit() in order to quit the application.

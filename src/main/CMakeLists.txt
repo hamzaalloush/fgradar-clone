@@ -26,4 +26,3 @@ endforeach()
 target_link_libraries(${PROJECT_LOWER} ${LIBS})
 
 install(TARGETS ${PROJECT_LOWER} RUNTIME DESTINATION bin)
-

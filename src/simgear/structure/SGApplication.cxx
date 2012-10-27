@@ -32,20 +32,18 @@ SGApplication::SGApplication(int argc, char **argv, const char* appname,
                              bool datadir_required):
      m_quit_flag(false),
      m_subsystem_mgr(new SGSubsystemMgr),
-     m_datafolder_param("data"),
-     m_appname(appname),
-     m_version_filename("version")
+     m_appname(appname)
 {
      // Initializing the log should be the first thing we do, so other
      // subsystems can use it later
      sglog().setLogLevels(SG_ALL, SG_WARN);
 
-     addCmdOption(std::string("--"+ m_datafolder_param), std::string("-d"),
+     addCmdOption(std::string("--data"), std::string("-d"),
                   std::string("specify data directory location."),
                   &SGApplication::onData);
      
      addCmdOption(std::string("--help"), std::string("-h"),
-                  std::string("shows the available command line options"),
+                  std::string("shows the available command line options."),
                   &SGApplication::onHelp);
      
      addCmdOption(std::string("--version"), std::string("-v"),
@@ -101,11 +99,11 @@ SGApplication::quit()
 bool
 SGApplication::checkVersion() {
   SGPath BaseCheck(SGApplication::ROOTDIR);
-  BaseCheck.append(m_version_filename);
+  BaseCheck.append("version");
   if (!BaseCheck.exists())
   {
-      std::cerr << m_appname << ":Missing base package. Use --"
-                << m_datafolder_param <<"=path_to_"<< m_appname <<"_data" << std::endl;
+      std::cerr << m_appname << ":Missing base package. Use --data"
+                <<"=path_to_"<< m_appname <<"_data" << std::endl;
       throw ("data directory missin");
   }
   return true;
@@ -148,7 +146,7 @@ bool
 SGApplication::
 onData(std::string arg) {
  ROOTDIR=arg;
- simgear::ResourceManager::instance()->addBasePath( ROOTDIR );
+ simgear::ResourceManager::instance()->addBasePath(ROOTDIR);
  return true; // don't exit
 }
 
