@@ -33,7 +33,7 @@ namespace fgradar {
      FgradarApp *fgradar_app = NULL;
 
      FgradarApp::FgradarApp(int argc, char **argv) :
-          SGApplication(argc, argv, "FGRadar", true)
+          SGCmdApplication("FGRadar", argc, argv, true)
      {
 	  checkVersion();
           init();

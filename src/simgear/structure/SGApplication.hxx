@@ -39,30 +39,6 @@ class SGApplication {
 public:
 
      /**
-      * \brief Defines the common command line callback.
-      *
-      * \param Extra content after the argument (everything after the '='). For
-      *        example, "--cmd=extra", where "extra" is the extra content.
-      * \return If we should exit the application after running the callback
-      *         (false exits the application).
-      */
-     typedef bool (SGApplication::*CmdCallback) (std::string);
-
-     /**
-      * \brief Defines a command line option.
-      *
-      * It has several attributes, like name, alias etc. and the callback
-      * function, that is, the function that gets executed when the option is
-      * issued.
-      */
-     struct CmdOption {
-          std::string command;
-          std::string alias;
-          std::string description;
-          SGApplication::CmdCallback function;
-     };
-
-     /**
       * This constructor performs all the initialization code (only memory
       * allocation and variable initialization, other things should go in
       * init()).
@@ -74,11 +50,11 @@ public:
       *       SGApplication(argc, argv)
       * \endcode
       *
-      * \param argc Number of arguments from main().
-      * \param argv Arguments from main().
+      * \param appname Application name.
+      * \param datadir_required Whether the data directory is required by the
+      *        program or not.
       */
-     SGApplication(int argc, char **argv, const char *appname,
-                   bool datadir_required = true);
+     SGApplication(const char *appname, bool datadir_required = true);
 
      virtual ~SGApplication();
 
@@ -155,13 +131,6 @@ protected:
      bool                                m_quit_flag;
 
      /**
-      * A list of known command line options (filled by the addCmdOption()
-      * method). This is used by the parseCmdOptions() method to check for
-      * defined command line options and execute their respective callback.
-      */
-     std::vector<CmdOption>              m_cmd_options;
-
-     /**
       * The subsystem manager. Controls the life cycle of every subsystem,
       * manages addition and removal of subsystems and keeps them always
       * accessible.
@@ -176,7 +145,6 @@ protected:
       */
      static SGSharedPtr<SGPropertyNode>  m_property_tree;
 
-     
      /**
       * \brief Initialization code should be placed here.
       *
@@ -188,42 +156,6 @@ protected:
       * all memory allocation.
       */
      virtual void init() {}
-
-     /**
-      * \brief Parse command line options.
-      *
-      * With the previously filled command line options vector, this function
-      * compares the command line options given by the user with the ones in the
-      * vector.
-      *
-      * You shouldn't call this method in your inherited class since it is
-      * already called by default.
-      *
-      * \see addCmdOption for more information about adding command line
-      * options.
-      *
-      * \param argc Number of arguments.
-      * \param argv Contents of each argument.
-      */
-     void parseCmdOptions(int argc, char **argv);
-
-     /**
-      * \brief Adds a command line option to the list of known cmd options.
-      *
-      * \param command The command the user has to issue. (e.g. --example).
-      * \param alias Alias to the command (e.g. -e).
-      * \param description A brief description about what the command does.
-      * \param func Function call when the command gets issued.
-      */
-     void addCmdOption(std::string command, std::string alias,
-                       std::string description, CmdCallback func);
-
-private:
-     
-     bool onData(std::string);
-     bool onVersion(std::string);
-     bool onHelp(std::string);
-     bool onProp(std::string);
 };
 
 #endif // __SGAPPLICATION_HXX
