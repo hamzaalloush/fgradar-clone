@@ -24,7 +24,7 @@ message(STATUS "Version: ${FGRADAR_VERSION}")
 
 # Make a lower case project name for internal operations (like executable
 # name for example).
-string(TOLOWER ${PROJECT_NAME} PROJECT_LOWER)
+string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER)
 
 # Include CPack configuration, located in CMakeModules.
 include(cpack_config)
