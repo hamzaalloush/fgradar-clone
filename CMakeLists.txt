@@ -5,8 +5,16 @@ project(FGRadar)
 # Include our own cmake modules that aren't included in the default package.
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMakeModules/")
 
-# Read VERSION file (located in the root directory, same one as this
-# CMakeList.txt), strip the result and store it in a variable.
+# Try to avoid in-source builds. Compares the binary directory with the
+# source directory. If they are equal, it means the user is trying to build
+# in-source.
+if(${CMAKE_BINARY_DIR} STREQUAL ${CMAKE_SOURCE_DIR})
+  message(FATAL_ERROR "In-source builds are not recommended, nor permitted. Instead, create a separate directory outside (or inside) ${CMAKE_SOURCE_DIR} and run CMake from there.
+Please remove CMake generated files (CMakeCache.txt and CMakeFiles/).")
+endif()
+
+# Read VERSION file (located in the root directory, where this CMakeList.txt
+# is located) and strip it.
 file(READ VERSION VERSION_FILE)
 if (NOT VERSION_FILE)
   message(FATAL_ERROR "Failed to determine version number. Check the VERSION file exists in the root folder (${CMAKE_SOURCE_DIR}). If it doesn't, check your download was performed correctly.")
@@ -37,7 +45,7 @@ if (GTK2_FOUND)
 endif()
 
 # Check for SQLite3
-# FIXME: The CMake module that searches for sqlite3, always thinks this is an
+# FIXME: The CMake module that searches for sqlite3 always thinks this is an
 # optional package.
 find_package(Sqlite3 REQUIRED)
 if (SQLITE3_FOUND)
@@ -45,15 +53,17 @@ if (SQLITE3_FOUND)
   set(LIBS ${LIBS} ${SQLITE3_LIBRARIES})
 endif()
 
-# Include directories
-include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories(${PROJECT_BINARY_DIR}/src)
-include_directories(${PROJECT_BINARY_DIR}/include)
+include_directories(
+  ${CMAKE_SOURCE_DIR}/src
+  ${CMAKE_BINARY_DIR}/src
+  ${CMAKE_BINARY_DIR}/include
+)
 
-# Configure file
+# Configure file. We need to use some things done in compile time from run-time,
+# so we use a CMake generated header file.
 configure_file(
-  "${PROJECT_SOURCE_DIR}/src/include/config.h.in"
-  "${PROJECT_BINARY_DIR}/src/include/config.h"
+  "${CMAKE_SOURCE_DIR}/src/include/config.h.in"
+  "${CMAKE_BINARY_DIR}/src/include/config.h"
   )
 
 add_subdirectory(src)
