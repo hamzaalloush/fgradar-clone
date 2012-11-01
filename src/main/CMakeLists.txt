@@ -7,7 +7,7 @@ set(HEADERS
   fgradar_app.hxx
 )
 
-add_executable(${PROJECT_LOWER} ${SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME_LOWER} ${SOURCES} ${HEADERS})
 
 foreach(MODULE
     ##
@@ -19,10 +19,10 @@ foreach(MODULE
 
     scripting
     multiplayer)
-  target_link_libraries(${PROJECT_LOWER} ${MODULE})
+  target_link_libraries(${PROJECT_NAME_LOWER} ${MODULE})
 endforeach()
 
 # Link the thrid-party libraries, not our source ones
-target_link_libraries(${PROJECT_LOWER} ${LIBS})
+target_link_libraries(${PROJECT_NAME_LOWER} ${LIBS})
 
-install(TARGETS ${PROJECT_LOWER} RUNTIME DESTINATION bin)
+install(TARGETS ${PROJECT_NAME_LOWER} RUNTIME DESTINATION bin)
