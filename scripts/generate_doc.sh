@@ -1,3 +1,3 @@
 #!/bin/sh
 
-doxygen doxygen.conf
+doxygen ../doxygen.conf
