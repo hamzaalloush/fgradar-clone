@@ -1,3 +1,8 @@
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
+
 #define PACKAGE "@PROJECT_NAME@"
 #define PACKAGE_LOWER "@PROJECT_NAME_LOWER@"
-#define VERSION "@FGRADAR_VERSION@"
+
+#endif // _CONFIG_H_
+

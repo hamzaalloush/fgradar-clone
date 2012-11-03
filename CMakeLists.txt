@@ -66,4 +66,10 @@ configure_file(
   "${CMAKE_BINARY_DIR}/src/include/config.h"
   )
 
+# Do the same for version.
+configure_file(
+  "${CMAKE_SOURCE_DIR}/src/include/version.h.in"
+  "${CMAKE_BINARY_DIR}/src/include/version.h"
+  )
+
 add_subdirectory(src)

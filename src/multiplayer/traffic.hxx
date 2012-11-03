@@ -2,7 +2,6 @@
 #define __TRAFFIC_HXX
  #include <simgear/io/sg_socket.hxx>
  #include <simgear/structure/subsystem_mgr.hxx>
- #include "../flightgear/mpmessages.hxx"
 
  class FGMultiplayerTraffic : public SGSubsystem {
  public:
