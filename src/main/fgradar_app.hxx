@@ -26,7 +26,7 @@
 #ifndef _FGRADAR_APP_HXX_
 #define _FGRADAR_APP_HXX_
 
-#include "simgear/structure/SGCmdApplication.hxx"
+#include "simgear/app/SGCmdApplication.hxx"
 
 namespace fgradar {
 

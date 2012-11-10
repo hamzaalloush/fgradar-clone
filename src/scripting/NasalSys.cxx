@@ -23,7 +23,7 @@
 
 #include "NasalSys.hxx"
 #include "main/fgradar_app.hxx" //FIXME should only include SGApplication.hxx here
-#include "simgear/structure/SGApplication.hxx"
+#include "simgear/app/SGApplication.hxx"
 
 using std::map;
 

@@ -1,11 +1,11 @@
 set(SOURCES
-  structure/SGApplication.cxx
-  structure/SGCmdApplication.cxx
+  app/SGApplication.cxx
+  app/SGCmdApplication.cxx
 )
 
 set(HEADERS
-  structure/SGApplication.hxx
-  structure/SGCmdApplication.hxx
+  app/SGApplication.hxx
+  app/SGCmdApplication.hxx
 )
 
 add_library(simgear ${SOURCES} ${HEADERS})

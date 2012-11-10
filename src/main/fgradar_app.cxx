@@ -30,33 +30,33 @@
 
 namespace fgradar {
 
-     FgradarApp *fgradar_app = NULL;
+    FgradarApp *fgradar_app = NULL;
 
-     FgradarApp::FgradarApp(int argc, char **argv) :
-          SGCmdApplication("FGRadar", argc, argv, true)
-     {
-	  checkVersion();
-          init();
-     }
+    FgradarApp::FgradarApp(int argc, char **argv) :
+        SGCmdApplication("FGRadar", argc, argv, true)
+    {
+        checkDataDirectoryExists();
+        init();
+    }
 
-     FgradarApp::~FgradarApp()
-     {
-     }
+    FgradarApp::~FgradarApp()
+    {
+    }
 
-     void
-     FgradarApp::init()
-     {
-          createSubsystems();
+    void
+    FgradarApp::init()
+    {
+        createSubsystems();
 
-          m_subsystem_mgr->init();
-     }
+        m_subsystem_mgr->init();
+    }
 
-     void FgradarApp::createSubsystems()
-     {
-          /*m_subsystem_mgr->add("fgms-traffic", new FGMultiplayerTraffic,
-            SGSubsystemMgr::GENERAL, 1.5);*/
-          m_subsystem_mgr->add("nasal", new FGNasal,
-                               SGSubsystemMgr::GENERAL, 0);
-     }
+    void FgradarApp::createSubsystems()
+    {
+        /*m_subsystem_mgr->add("fgms-traffic", new FGMultiplayerTraffic,
+          SGSubsystemMgr::GENERAL, 1.5);*/
+        m_subsystem_mgr->add("nasal", new FGNasal,
+                             SGSubsystemMgr::GENERAL, 0);
+    }
 
 } // namespace fgradar

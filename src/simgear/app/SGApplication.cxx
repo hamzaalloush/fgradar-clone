@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <simgear/debug/logstream.hxx>
 #include <simgear/misc/ResourceManager.hxx>
+#include <simgear/structure/exception.hxx>
 
 #include "SGApplication.hxx"
 
@@ -25,20 +26,20 @@ std::string SGApplication::ROOTDIR(".");
 SGSharedPtr<SGPropertyNode> SGApplication::m_property_tree = new SGPropertyNode;
 
 /**
- * Allocate memory and initialize variables. argc and argv are given so the user
- * can use them or not, but it is not compulsory.
+ * Initialize variables. Set SimGear log levels and check if the user
+ * provided a data directory.
  */
 SGApplication::SGApplication(const char *appname, bool datadir_required) :
-     m_quit_flag(false),
-     m_subsystem_mgr(new SGSubsystemMgr),
-     m_appname(appname)
+    m_quit_flag(false),
+    m_subsystem_mgr(new SGSubsystemMgr),
+    m_appname(appname)
 {
-     // Initializing the log should be the first thing to do, so other
-     // subsystems can use it later
-     sglog().setLogLevels(SG_ALL, SG_WARN);
+    // Initializing the log should be the first thing to do, so other
+    // subsystems can use it later
+    sglog().setLogLevels(SG_ALL, SG_WARN);
      
-     if (datadir_required && SGApplication::ROOTDIR.empty())
-	throw("Data directory required");
+    if (datadir_required && SGApplication::ROOTDIR.empty())
+        throw sg_exception("Data directory required");
 }
 
 SGApplication::~SGApplication()
@@ -55,11 +56,11 @@ SGApplication::~SGApplication()
 void
 SGApplication::run()
 {
-     while (!m_quit_flag) {
+    while (!m_quit_flag) {
 
-          // Update subsystems
-          m_subsystem_mgr->update(0.1);
-     }
+        // Update subsystems
+        m_subsystem_mgr->update(0.1);
+    }
 }
 
 /**
@@ -70,25 +71,24 @@ SGApplication::run()
 void
 SGApplication::quit()
 {
-     SG_LOG(SG_GENERAL, SG_INFO, "SGApplication quit signal");
-     m_quit_flag = true;
+    SG_LOG(SG_GENERAL, SG_INFO, "SGApplication quit signal");
+    m_quit_flag = true;
 }
 
 /**
- * Check the existence of the version file. If it doesn't exist, it means the
- * user has specified a wrong data directory and throws an exception.
+ * Checks if the 'version' file exists inside the provided data directory. If it
+ * exists, it means the correct directory was provided.
+ *
+ * This isn't a really exact way of checking it (you can have another directory
+ * with a 'version' file on it), but it is the only way of doing this without
+ * checking the directory name.
  */
-bool
-SGApplication::checkVersion()
+void
+SGApplication::checkDataDirectoryExists()
 {
-     SGPath BaseCheck(SGApplication::ROOTDIR);
-     BaseCheck.append("version");
+    SGPath base_check(SGApplication::ROOTDIR);
+    base_check.append("version");
      
-     if (!BaseCheck.exists()) {
-          SG_LOG(SG_GENERAL, SG_ALERT, "Missing data directory in '"
-                 << SGApplication::ROOTDIR << "'.");
-          throw ("Missing data directory.");
-     }
-     
-     return true;
+    if (!base_check.exists())
+        throw sg_io_exception("Invalid data directory", base_check.c_str());
 }

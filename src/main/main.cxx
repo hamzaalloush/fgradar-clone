@@ -36,23 +36,24 @@
  */
 
 #include <iostream>
+#include <simgear/structure/exception.hxx>
 
 #include "fgradar_app.hxx"
 
 int
 main(int argc, char **argv)
 {
-     using namespace fgradar;
+    using namespace fgradar;
      
-     try {
-          fgradar_app = new FgradarApp(argc, argv);
-          fgradar_app->run();
-     } catch (...) {
-          std::cerr << "Something went wrong. Aborting..." << std::endl;
-          return 1;
-     }
+    try {
+        fgradar_app = new FgradarApp(argc, argv);
+        fgradar_app->run();
+    } catch (const sg_exception &e) {
+        std::cerr << e.what() << "\nAborting..." << std::endl;
+        return 1;
+    }
 
-     delete fgradar_app;
+    delete fgradar_app;
      
-     return 0;
+    return 0;
 }
