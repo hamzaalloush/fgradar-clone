@@ -59,8 +59,9 @@ public:
      * This function should be called from outside the derived class, from
      * main() for example. To exit the loop, use the 'quit' function.
      *
-     * If you plan adding other stuff that isn't done in the SGApplication
-     * implementation, make sure you call it from your implementation.
+     * If you need another type of main loop, just implement this function in
+     * your derived class (calling this one from your implementation is not
+     * recommended, nor useful).
      */
     virtual void run();
 
@@ -113,10 +114,9 @@ protected:
     SGSharedPtr<SGSubsystemMgr>         m_subsystem_mgr;
 
     /**
-     * This is the property tree. It is just a node to the root of the
-     * property tree, so all the property tree is a child of it. We make
-     * it static so there is only one property tree in the whole program,
-     * even if by accident there are two subsystems.
+     * The application property tree. It is a pointer to the root node. Also, it
+     * is made static so even if by accident there are several SGApplication
+     * objects, all of them share the same property tree.
      */
     static SGSharedPtr<SGPropertyNode>  m_property_tree;
 
@@ -131,6 +131,18 @@ protected:
      * all memory allocation.
      */
     virtual void init() {}
+
+    /**
+     * Calculate the elapsed time between previous and current frames in
+     * seconds. Also throttle FPS if desired. This is useful when limiting CPU
+     * usage is a possibility (light and low power consuming programs for
+     * example).
+     *
+     * \param target_fps_sec (Optional, does nothing by default)
+     *                       FPS to get in seconds.
+     * \return Delta time in seconds.
+     */
+    double calculateDeltaTime(int target_fps_sec = 0);
 
     /**
      * \brief Check if the provided data directory exists.

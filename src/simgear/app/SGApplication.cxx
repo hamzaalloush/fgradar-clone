@@ -19,6 +19,7 @@
 #include <simgear/debug/logstream.hxx>
 #include <simgear/misc/ResourceManager.hxx>
 #include <simgear/structure/exception.hxx>
+#include <simgear/timing/timestamp.hxx>
 
 #include "SGApplication.hxx"
 
@@ -48,18 +49,19 @@ SGApplication::~SGApplication()
 
 /**
  * Run the main loop until 'm_quit_flag' is true.
- * This simple main loop updates all the subsystems (by updating the subsystem
- * manager). The update function actually needs the delta time, but FGRadar
- * doesn't need a lot of resources and it isn't a heavy 3D program, so passing 0
- * is a good solution.
+ * Uses the calculateDeltaTime() function in order to throttle FPS and computing
+ * delta time. This delta time is used by the subsystem manager while updating
+ * its children.
  */
 void
 SGApplication::run()
 {
     while (!m_quit_flag) {
 
+        double dt = calculateDeltaTime(30);
+        
         // Update subsystems
-        m_subsystem_mgr->update(0.1);
+        m_subsystem_mgr->update(dt);
     }
 }
 
@@ -91,4 +93,50 @@ SGApplication::checkDataDirectoryExists()
      
     if (!base_check.exists())
         throw sg_io_exception("Invalid data directory", base_check.c_str());
+}
+
+/**
+ * Calculates elased time between frames by substracting two time stamps, the
+ * previous frame one, and the current frame one. This gives the time increment
+ * from one frame to another.
+ *
+ * Apart from calculating delta time, also limit FPS if needed.
+ *
+ * @note prev_time is 0 at the first tick, it gets updated in the
+ * 2nd. Therefore, program runs at max speed during 1st tick (nothing noticeable
+ * though).
+ */
+double
+SGApplication::calculateDeltaTime(int target_fps_sec)
+{
+    SGTimeStamp current_time;
+    static SGTimeStamp prev_time;
+
+    current_time.stamp();
+
+    // Check if throttling frame rate is needed
+    if (target_fps_sec > 0) {
+
+        double elapsed_us = (current_time - prev_time).toUSecs();
+        double fps_us = 1.0e6 / target_fps_sec; // FPS in microseconds
+
+        // Program only sleeps when we have enough time. If not, keep running
+        // as fast as it can!
+        if (elapsed_us < fps_us) {
+            double wait_time_us = fps_us - elapsed_us;
+#ifdef _WIN32
+            Sleep(wait_time_us / 1.0e3);
+#else
+            usleep(wait_time_us);
+#endif
+        }
+
+        // Update the current time since we lost some with the previous stuff
+        current_time.stamp();
+    }
+
+    double dt_sec = (current_time - prev_time).toSecs();
+    prev_time = current_time;
+
+    return dt_sec;
 }
