@@ -107,6 +107,12 @@ protected:
     bool                                m_quit_flag;
 
     /**
+     * Target Frames Per Second. This value is taken from the property tree and
+     * defined by the user.
+     */
+    double                              m_target_fps;
+
+    /**
      * The subsystem manager. Controls the life cycle of every subsystem,
      * manages addition and removal of subsystems and keeps them always
      * accessible.
@@ -138,11 +144,9 @@ protected:
      * usage is a possibility (light and low power consuming programs for
      * example).
      *
-     * \param target_fps_sec (Optional, does nothing by default)
-     *                       FPS to get in seconds.
      * \return Delta time in seconds.
      */
-    double calculateDeltaTime(int target_fps_sec = 0);
+    double calculateDeltaTime();
 
     /**
      * \brief Check if the provided data directory exists.

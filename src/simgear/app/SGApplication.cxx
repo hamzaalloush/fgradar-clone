@@ -32,6 +32,7 @@ SGSharedPtr<SGPropertyNode> SGApplication::m_property_tree = new SGPropertyNode;
  */
 SGApplication::SGApplication(const char *appname, bool datadir_required) :
     m_quit_flag(false),
+    m_target_fps(0),
     m_subsystem_mgr(new SGSubsystemMgr),
     m_appname(appname)
 {
@@ -41,6 +42,10 @@ SGApplication::SGApplication(const char *appname, bool datadir_required) :
      
     if (datadir_required && SGApplication::ROOTDIR.empty())
         throw sg_exception("Data directory required");
+
+    SGPropertyNode_ptr target_fps = getNode("/target-fps", false);
+    if (target_fps != NULL)
+        m_target_fps = target_fps->getDoubleValue();
 }
 
 SGApplication::~SGApplication()
@@ -58,7 +63,7 @@ SGApplication::run()
 {
     while (!m_quit_flag) {
 
-        double dt = calculateDeltaTime(30);
+        double dt = calculateDeltaTime();
         
         // Update subsystems
         m_subsystem_mgr->update(dt);
@@ -107,36 +112,32 @@ SGApplication::checkDataDirectoryExists()
  * though).
  */
 double
-SGApplication::calculateDeltaTime(int target_fps_sec)
+SGApplication::calculateDeltaTime()
 {
     SGTimeStamp current_time;
     static SGTimeStamp prev_time;
 
     current_time.stamp();
 
-    // Check if throttling frame rate is needed
-    if (target_fps_sec > 0) {
+    SGTimeStamp dt = current_time - prev_time;
+        
+    if (m_target_fps > 0) {
+        // Maximum time the frame should take to finish
+        SGTimeStamp max_time = SGTimeStamp::fromUSec(1.0e6 / m_target_fps);
 
-        double elapsed_us = (current_time - prev_time).toUSecs();
-        double fps_us = 1.0e6 / target_fps_sec; // FPS in microseconds
-
-        // Program only sleeps when we have enough time. If not, keep running
-        // as fast as it can!
-        if (elapsed_us < fps_us) {
-            double wait_time_us = fps_us - elapsed_us;
-#ifdef _WIN32
-            Sleep(wait_time_us / 1.0e3);
-#else
-            usleep(wait_time_us);
-#endif
+        // Check if we have enough time to sleep. If not, keep running until we
+        // reach the target FPS.
+        if (dt < max_time) {
+            SGTimeStamp wait_time = max_time - dt;
+            SGTimeStamp::sleepFor(wait_time);
         }
 
-        // Update the current time since we lost some with the previous stuff
+        // Update delta since the previous stuff took some time to do
         current_time.stamp();
+        dt = current_time - prev_time;
     }
 
-    double dt_sec = (current_time - prev_time).toSecs();
     prev_time = current_time;
 
-    return dt_sec;
+    return dt.toSecs();
 }
